@@ -23,9 +23,9 @@ jobs:
 
       - name: Get config.json
         run: |
-          echo "====== check config.josn file ======"
+          echo "====== check config.json file ======"
           cat config.json
-          echo "====== check config.josn end  ======"
+          echo "====== check config.json end  ======"
           sudo apt-get install jq
 
       - name: Set up Python
@@ -48,6 +48,12 @@ jobs:
 
       - name: Generate new html
         run: |
+          # 1. 备份仓库中已有的自定义 index.html（如果存在）
+          if [ -f "docs/index.html" ]; then
+            cp docs/index.html /tmp/index_backup.html  # 临时备份到 /tmp 目录
+          fi
+          
+          # 2. 执行 Gmeek 构建（会生成新的 index.html，可能覆盖原有文件）
           cp -r ./* /opt/Gmeek/
           cd /opt/Gmeek/
           python Gmeek.py ${{ secrets.GITHUB_TOKEN }} ${{ github.repository }} --issue_number '${{ github.event.issue.number }}'
@@ -55,6 +61,12 @@ jobs:
           cp -a /opt/Gmeek/backup ${{ github.workspace }} 
           cp /opt/Gmeek/blogBase.json ${{ github.workspace }} 
           
+          # 3. 用备份的自定义 index.html 覆盖自动生成的版本（如果备份存在）
+          if [ -f "/tmp/index_backup.html" ]; then
+            cp /tmp/index_backup.html docs/index.html  # 恢复自定义版本
+            rm /tmp/index_backup.html  # 清理临时备份
+          fi
+
       - name: update html
         run: |
           git config --local user.email "$(jq -r ".email" config.json)"
