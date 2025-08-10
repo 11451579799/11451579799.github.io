@@ -23,9 +23,9 @@ jobs:
 
       - name: Get config.json
         run: |
-          echo "====== check config.json file ======"
-          cat config.json
-          echo "====== check config.json end  ======"
+          echo "====== 检查 config.json 文件 ======"
+          cat config.json || echo "⚠️ config.json 不存在"
+          echo "====== 检查 config.json 结束 ======"
           sudo apt-get install jq
 
       - name: Set up Python
@@ -36,47 +36,90 @@ jobs:
       - name: Clone source code
         run: |
           GMEEK_VERSION=$(jq -r ".GMEEK_VERSION" config.json)
+          echo "🔍 检测到 Gmeek 版本: $GMEEK_VERSION"
           git clone https://github.com/Meekdai/Gmeek.git /opt/Gmeek;
           cd /opt/Gmeek/
           lastTag=$(git describe --tags `git rev-list --tags --max-count=1`)
-          if [ $GMEEK_VERSION == 'last' ]; then git checkout $lastTag; else git checkout $GMEEK_VERSION; fi;
+          echo "🔍 最新标签版本: $lastTag"
+          if [ "$GMEEK_VERSION" == "last" ]; then 
+            git checkout $lastTag; 
+          else 
+            git checkout $GMEEK_VERSION; 
+          fi;
 
       - name: Install dependencies
         run: |
           pip install --upgrade pip
           pip install -r /opt/Gmeek/requirements.txt
 
-      - name: Generate new html
+      - name: 备份自定义 index.html（关键步骤）
         run: |
-          # 1. 备份仓库中已有的自定义 index.html（如果存在）
-          if [ -f "docs/index.html" ]; then
-            cp docs/index.html /tmp/index_backup.html  # 临时备份到 /tmp 目录
+          echo "📦 准备备份自定义 index.html"
+          # 确认 docs 目录存在
+          if [ ! -d "docs" ]; then
+            echo "⚠️ docs 目录不存在，创建 docs 目录"
+            mkdir -p docs
           fi
-          
-          # 2. 执行 Gmeek 构建（会生成新的 index.html，可能覆盖原有文件）
+          # 备份已存在的 index.html
+          if [ -f "docs/index.html" ]; then
+            echo "✅ 发现自定义 index.html，备份到 /tmp/index_backup.html"
+            cp docs/index.html /tmp/index_backup.html
+            # 验证备份是否成功
+            if [ -f "/tmp/index_backup.html" ]; then
+              echo "✅ 备份成功，文件大小: $(du -h /tmp/index_backup.html | cut -f1)"
+            else
+              echo "❌ 备份失败！/tmp/index_backup.html 未生成"
+            fi
+          else
+            echo "ℹ️ 未发现自定义 index.html，无需备份"
+          fi
+
+      - name: 执行 Gmeek 构建
+        run: |
+          echo "🔨 开始执行 Gmeek 构建..."
           cp -r ./* /opt/Gmeek/
           cd /opt/Gmeek/
           python Gmeek.py ${{ secrets.GITHUB_TOKEN }} ${{ github.repository }} --issue_number '${{ github.event.issue.number }}'
+          # 复制构建结果回工作目录
           cp -a /opt/Gmeek/docs ${{ github.workspace }} 
           cp -a /opt/Gmeek/backup ${{ github.workspace }} 
           cp /opt/Gmeek/blogBase.json ${{ github.workspace }} 
-          
-          # 3. 用备份的自定义 index.html 覆盖自动生成的版本（如果备份存在）
+          echo "🔨 构建完成，生成新文件"
+
+      - name: 恢复自定义 index.html（关键步骤）
+        run: |
+          echo "🔄 准备恢复自定义 index.html"
           if [ -f "/tmp/index_backup.html" ]; then
-            cp /tmp/index_backup.html docs/index.html  # 恢复自定义版本
-            rm /tmp/index_backup.html  # 清理临时备份
+            echo "✅ 发现备份文件，开始恢复..."
+            # 先删除构建生成的 index.html
+            if [ -f "docs/index.html" ]; then
+              rm docs/index.html
+              echo "ℹ️ 已删除构建生成的 index.html"
+            fi
+            # 恢复备份文件
+            cp /tmp/index_backup.html docs/index.html
+            # 验证恢复结果
+            if [ -f "docs/index.html" ]; then
+              echo "✅ 恢复成功，文件大小: $(du -h docs/index.html | cut -f1)"
+            else
+              echo "❌ 恢复失败！docs/index.html 未生成"
+            fi
+            # 清理备份
+            rm /tmp/index_backup.html
+          else
+            echo "ℹ️ 无备份文件，使用构建生成的 index.html"
           fi
 
-      - name: update html
+      - name: 提交更新
         run: |
           git config --local user.email "$(jq -r ".email" config.json)"
           git config --local user.name "${{ github.repository_owner }}"
           git add .
-          git commit -a -m '🎉auto update by Gmeek action' || echo "nothing to commit"
-          git push || echo "nothing to push"
+          git commit -a -m '🎉auto update by Gmeek action' || echo "ℹ️ 没有需要提交的内容"
+          git push || echo "ℹ️ 没有需要推送的内容"
           sleep 3
           
-      - name: Upload artifact
+      - name: 上传部署产物
         uses: actions/upload-pages-artifact@v3
         with:
           path: 'docs/.'
