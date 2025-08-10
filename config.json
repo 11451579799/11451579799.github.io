@@ -1,6 +1,770 @@
-{
-    "title":"Blog Title",
-    "subTitle":"Blog description",
-    "avatarUrl":"https://github.githubassets.com/favicons/favicon.svg",
-    "GMEEK_VERSION":"last"
-}
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title id="blog-title">Blog Title - 我的世界小站</title>
+    <!-- 引入外部资源 -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdn.jsdelivr.net/npm/font-awesome@4.7.0/css/font-awesome.min.css" rel="stylesheet">
+    
+    <!-- Tailwind 配置 - Minecraft风格配色 -->
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#4CAF50', // 草方块绿色
+                        secondary: '#8B4513', // 木头棕色
+                        accent: '#1E88E5', // 水蓝色
+                        dirt: '#A0522D', // 泥土色
+                        stone: '#9E9E9E', // 石头灰色
+                        coal: '#212121', // 煤炭黑色
+                        gold: '#FFD700', // 黄金色
+                    },
+                    fontFamily: {
+                        minecraft: ['"Press Start 2P"', 'monospace', 'sans-serif'],
+                        sans: ['Inter', 'system-ui', 'sans-serif'],
+                    },
+                }
+            }
+        }
+    </script>
+    
+    <style type="text/tailwindcss">
+        @layer utilities {
+            .backdrop-blur {
+                backdrop-filter: blur(8px);
+            }
+            .text-shadow {
+                text-shadow: 2px 2px 0px rgba(0, 0, 0, 0.8);
+            }
+            .pixel-border {
+                box-shadow: 0 -4px 0 4px rgba(0,0,0,0.2), 
+                            4px 0 0 4px rgba(0,0,0,0.2), 
+                            0 4px 0 4px rgba(0,0,0,0.2), 
+                            -4px 0 0 4px rgba(0,0,0,0.2);
+            }
+            .minecraft-hover {
+                @apply transition-all duration-200 hover:scale-105 active:scale-95;
+            }
+            .gradient-mask-b {
+                mask-image: linear-gradient(to bottom, black 60%, transparent 100%);
+            }
+            .block-bg {
+                background-image: url("data:image/svg+xml,%3Csvg width='16' height='16' viewBox='0 0 16 16' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M0 0h16v2h-6v6h6v8H8v-6H2v6H0V0zm4 4h2v2H4V4zm8 8h2v2h-2v-2zm-8 0h2v2H4v-2zm8-8h2v2h-2V4z' fill='%239C92AC' fill-opacity='0.05' fill-rule='evenodd'/%3E%3C/svg%3E");
+            }
+        }
+        
+        html {
+            scroll-behavior: smooth;
+        }
+        
+        ::-webkit-scrollbar {
+            width: 12px;
+            height: 12px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #f1f1f1;
+            border: 2px solid #ddd;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #4CAF50;
+            border: 2px solid #3d8b40;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #3d8b40;
+        }
+        
+        .pixel-btn {
+            position: relative;
+            top: 0;
+            left: 0;
+            transition: all 0.1s ease;
+        }
+        .pixel-btn:hover {
+            top: -2px;
+            left: -2px;
+        }
+        .pixel-btn:active {
+            top: 2px;
+            left: 2px;
+        }
+        
+        .blur-bg {
+            background: rgba(255, 255, 255, 0.7);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+        }
+        
+        .hero-blur {
+            position: relative;
+        }
+        .hero-blur::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: url('https://picsum.photos/id/137/1920/1080');
+            background-size: cover;
+            background-position: center;
+            filter: blur(8px);
+            z-index: -1;
+            transform: scale(1.05);
+        }
+        
+        .fade-in-section {
+            opacity: 0;
+            transform: translateY(20px);
+            transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+        }
+        .fade-in-section.is-visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        
+        .screenshot-item {
+            transition: all 0.3s ease;
+            overflow: hidden;
+        }
+        .screenshot-item img {
+            transition: transform 0.5s ease;
+        }
+        .screenshot-item:hover img {
+            transform: scale(1.1);
+        }
+        
+        .typewriter h2 {
+            overflow: hidden;
+            border-right: 0.15em solid #4CAF50;
+            white-space: nowrap;
+            margin: 0 auto;
+            animation: 
+                typing 3.5s steps(40, end),
+                blink-caret 0.75s step-end infinite;
+        }
+        @keyframes typing {
+            from { width: 0 }
+            to { width: 100% }
+        }
+        @keyframes blink-caret {
+            from, to { border-color: transparent }
+            50% { border-color: #4CAF50 }
+        }
+        
+        .message-appear {
+            animation: fadeIn 0.5s ease forwards;
+        }
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+    </style>
+</head>
+
+<body class="bg-gray-50 font-sans text-gray-800 block-bg">
+    <!-- 配置数据 -->
+    <script>
+        const config = {
+            "title":"Blog Title",
+            "subTitle":"Blog description",
+            "avatarUrl":"https://github.githubassets.com/favicons/favicon.svg",
+            "GMEEK_VERSION":"last"
+        };
+    </script>
+
+    <!-- 导航栏 -->
+    <header id="navbar" class="fixed w-full z-50 transition-all duration-300 py-4">
+        <div class="container mx-auto px-4 md:px-6">
+            <nav class="blur-bg rounded-full px-6 py-3 shadow-md flex justify-between items-center">
+                <a href="#" class="text-xl md:text-2xl font-bold text-primary flex items-center minecraft-hover">
+                    <i class="fa fa-cube mr-2" aria-hidden="true"></i>
+                    <span class="font-minecraft" id="nav-title">Blog Title</span>
+                </a>
+                
+                <!-- 桌面导航 -->
+                <div class="hidden md:flex space-x-6">
+                    <a href="#about" class="hover:text-primary transition-colors minecraft-hover">关于我</a>
+                    <a href="#works" class="hover:text-primary transition-colors minecraft-hover">屑作展示</a>
+                    <a href="#screenshots" class="hover:text-primary transition-colors minecraft-hover">游戏截图</a>
+                    <a href="#messages" class="hover:text-primary transition-colors minecraft-hover">留言板</a>
+                </div>
+                
+                <!-- 移动端菜单按钮 -->
+                <button id="menu-toggle" class="md:hidden text-gray-700 focus:outline-none minecraft-hover">
+                    <i class="fa fa-bars text-xl" aria-hidden="true"></i>
+                </button>
+            </nav>
+            
+            <!-- 移动端导航菜单 -->
+            <div id="mobile-menu" class="md:hidden hidden mt-3 blur-bg rounded-lg px-4 py-3 shadow-md">
+                <div class="flex flex-col space-y-3">
+                    <a href="#about" class="hover:text-primary transition-colors py-2 minecraft-hover">关于我</a>
+                    <a href="#works" class="hover:text-primary transition-colors py-2 minecraft-hover">屑作展示</a>
+                    <a href="#screenshots" class="hover:text-primary transition-colors py-2 minecraft-hover">游戏截图</a>
+                    <a href="#messages" class="hover:text-primary transition-colors py-2 minecraft-hover">留言板</a>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- 英雄区域 -->
+    <section class="hero-blur min-h-screen flex items-center justify-center relative pt-16">
+        <div class="absolute inset-0 bg-black/40 z-0"></div>
+        <div class="container mx-auto px-4 z-10 text-center">
+            <div class="inline-block mb-6 pixel-border rounded-full overflow-hidden">
+                <div class="w-32 h-32 md:w-48 md:h-48 rounded-full overflow-hidden border-4 border-white shadow-xl mx-auto transform transition-transform hover:scale-105">
+                    <img src="" alt="个人头像" class="w-full h-full object-cover" id="avatar-image">
+                </div>
+            </div>
+            
+            <div class="typewriter mb-6">
+                <h1 class="text-[clamp(2rem,5vw,3.5rem)] font-bold text-white text-shadow mb-4 font-minecraft" id="hero-title">
+                    Blog Title
+                </h1>
+            </div>
+            
+            <p class="text-[clamp(1rem,2vw,1.5rem)] text-white/90 max-w-2xl mx-auto mb-8 text-shadow" id="hero-subtitle">
+                Blog description
+            </p>
+            
+            <div class="flex flex-wrap justify-center gap-4">
+                <a href="#works" class="bg-primary hover:bg-primary/90 text-white px-6 py-3 rounded-lg shadow-lg transition-all hover:shadow-xl pixel-btn">
+                    <i class="fa fa-th-large mr-2" aria-hidden="true"></i>查看我的作品
+                </a>
+                <a href="#messages" class="bg-white/20 backdrop-blur hover:bg-white/30 text-white px-6 py-3 rounded-lg shadow-lg transition-all hover:shadow-xl pixel-btn">
+                    <i class="fa fa-comment mr-2" aria-hidden="true"></i>一起交流
+                </a>
+            </div>
+            
+            <!-- 版本信息 -->
+            <div class="absolute bottom-16 left-1/2 transform -translate-x-1/2 text-white/70 text-sm">
+                <span id="version-info">Version: last</span>
+            </div>
+            
+            <!-- 滚动提示 -->
+            <div class="absolute bottom-10 left-1/2 transform -translate-x-1/2 animate-bounce">
+                <i class="fa fa-angle-down text-white text-2xl" aria-hidden="true"></i>
+            </div>
+        </div>
+    </section>
+
+    <!-- 关于我 -->
+    <section id="about" class="py-20 bg-white">
+        <div class="container mx-auto px-4">
+            <div class="text-center mb-16 fade-in-section">
+                <h2 class="text-[clamp(1.8rem,4vw,2.5rem)] font-bold text-dark mb-4 font-minecraft text-primary">关于我</h2>
+                <div class="w-20 h-1 bg-primary mx-auto rounded-full"></div>
+            </div>
+            
+            <div class="max-w-4xl mx-auto grid md:grid-cols-2 gap-10 items-center">
+                <div class="relative fade-in-section">
+                    <div class="absolute -top-4 -left-4 w-full h-full bg-primary/20 rounded-lg -z-10"></div>
+                    <img src="https://picsum.photos/id/1076/600/800" alt="玩Minecraft的照片" class="w-full h-auto rounded-lg shadow-lg pixel-border">
+                </div>
+                
+                <div class="fade-in-section">
+                    <h3 class="text-2xl font-semibold mb-4 text-dark font-minecraft">我是小方块</h3>
+                    <p class="text-gray-600 mb-4 leading-relaxed">
+                        一名初二学生，从小学三年级开始接触Minecraft，从此就深深爱上了这款游戏。
+                    </p>
+                    <p class="text-gray-600 mb-4 leading-relaxed">
+                        最喜欢玩创造模式和红石电路，梦想是做出一个全自动的红石基地！平时会在课余时间玩一会儿，周末会录制一些游戏视频。
+                    </p>
+                    <p class="text-gray-600 mb-6 leading-relaxed">
+                        这个小站用来分享我的一些"屑作"（自己不太满意的作品），希望能和其他Minecraft爱好者交流学习！
+                    </p>
+                    
+                    <div class="grid grid-cols-2 gap-4 mb-6">
+                        <div class="flex items-center">
+                            <div class="w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center mr-3">
+                                <i class="fa fa-cube text-primary" aria-hidden="true"></i>
+                            </div>
+                            <span>Minecraft玩家</span>
+                        </div>
+                        <div class="flex items-center">
+                            <div class="w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center mr-3">
+                                <i class="fa fa-wrench text-primary" aria-hidden="true"></i>
+                            </div>
+                            <span>红石爱好者</span>
+                        </div>
+                        <div class="flex items-center">
+                            <div class="w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center mr-3">
+                                <i class="fa fa-building text-primary" aria-hidden="true"></i>
+                            </div>
+                            <span>建筑新手</span>
+                        </div>
+                        <div class="flex items-center">
+                            <div class="w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center mr-3">
+                                <i class="fa fa-graduation-cap text-primary" aria-hidden="true"></i>
+                            </div>
+                            <span>初二学生</span>
+                        </div>
+                    </div>
+                    
+                    <a href="#messages" class="inline-flex items-center text-primary font-medium hover:underline minecraft-hover">
+                        和我聊Minecraft <i class="fa fa-arrow-right ml-2" aria-hidden="true"></i>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 屑作展示 -->
+    <section id="works" class="py-20 bg-gray-50">
+        <div class="container mx-auto px-4">
+            <div class="text-center mb-16 fade-in-section">
+                <h2 class="text-[clamp(1.8rem,4vw,2.5rem)] font-bold text-dark mb-4 font-minecraft text-primary">屑作展示</h2>
+                <div class="w-20 h-1 bg-primary mx-auto rounded-full mb-6"></div>
+                <p class="text-gray-600 max-w-2xl mx-auto">分享我的一些Minecraft作品和心得，都是自己摸索的，欢迎指点</p>
+            </div>
+            
+            <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8 max-w-6xl mx-auto">
+                <!-- 作品卡片1 -->
+                <div class="bg-white rounded-xl overflow-hidden shadow-md transition-all duration-300 hover:shadow-xl hover:-translate-y-1 fade-in-section">
+                    <div class="h-48 overflow-hidden">
+                        <img src="https://picsum.photos/id/110/600/400" alt="自动农场作品封面" class="w-full h-full object-cover transition-transform duration-500 hover:scale-110">
+                    </div>
+                    <div class="p-6">
+                        <div class="flex items-center text-sm text-gray-500 mb-3">
+                            <span class="flex items-center"><i class="fa fa-calendar-o mr-1" aria-hidden="true"></i> 2023-06-15</span>
+                            <span class="mx-2">•</span>
+                            <span class="flex items-center"><i class="fa fa-tag mr-1" aria-hidden="true"></i> 红石作品</span>
+                        </div>
+                        <h3 class="text-xl font-semibold mb-2 hover:text-primary transition-colors font-minecraft">
+                            <a href="#">自动小麦农场</a>
+                        </h3>
+                        <p class="text-gray-600 mb-4 line-clamp-3">
+                            花了两天做的自动小麦农场，用了水流收集和活塞推动，虽然效率不高，但总算能自动运作了...
+                        </p>
+                        <a href="#" class="inline-flex items-center text-primary font-medium hover:underline minecraft-hover">
+                            查看详情 <i class="fa fa-long-arrow-right ml-2" aria-hidden="true"></i>
+                        </a>
+                    </div>
+                </div>
+                
+                <!-- 作品卡片2 -->
+                <div class="bg-white rounded-xl overflow-hidden shadow-md transition-all duration-300 hover:shadow-xl hover:-translate-y-1 fade-in-section">
+                    <div class="h-48 overflow-hidden">
+                        <img src="https://picsum.photos/id/129/600/400" alt="小木屋作品封面" class="w-full h-full object-cover transition-transform duration-500 hover:scale-110">
+                    </div>
+                    <div class="p-6">
+                        <div class="flex items-center text-sm text-gray-500 mb-3">
+                            <span class="flex items-center"><i class="fa fa-calendar-o mr-1" aria-hidden="true"></i> 2023-05-22</span>
+                            <span class="mx-2">•</span>
+                            <span class="flex items-center"><i class="fa fa-tag mr-1" aria-hidden="true"></i> 建筑作品</span>
+                        </div>
+                        <h3 class="text-xl font-semibold mb-2 hover:text-primary transition-colors font-minecraft">
+                            <a href="#">生存模式小木屋</a>
+                        </h3>
+                        <p class="text-gray-600 mb-4 line-clamp-3">
+                            在生存模式里建的第一个房子，外观很普通但很实用，有地下室和自动门，勿喷...
+                        </p>
+                        <a href="#" class="inline-flex items-center text-primary font-medium hover:underline minecraft-hover">
+                            查看详情 <i class="fa fa-long-arrow-right ml-2" aria-hidden="true"></i>
+                        </a>
+                    </div>
+                </div>
+                
+                <!-- 作品卡片3 -->
+                <div class="bg-white rounded-xl overflow-hidden shadow-md transition-all duration-300 hover:shadow-xl hover:-translate-y-1 fade-in-section">
+                    <div class="h-48 overflow-hidden">
+                        <img src="https://picsum.photos/id/188/600/400" alt="红石电梯作品封面" class="w-full h-full object-cover transition-transform duration-500 hover:scale-110">
+                    </div>
+                    <div class="p-6">
+                        <div class="flex items-center text-sm text-gray-500 mb-3">
+                            <span class="flex items-center"><i class="fa fa-calendar-o mr-1" aria-hidden="true"></i> 2023-04-10</span>
+                            <span class="mx-2">•</span>
+                            <span class="flex items-center"><i class="fa fa-tag mr-1" aria-hidden="true"></i> 红石作品</span>
+                        </div>
+                        <h3 class="text-xl font-semibold mb-2 hover:text-primary transition-colors font-minecraft">
+                            <a href="#">简易红石电梯</a>
+                        </h3>
+                        <p class="text-gray-600 mb-4 line-clamp-3">
+                            参考教程做的红石电梯，只能上下三层，经常卡壳，还在改进中，求大神指导...
+                        </p>
+                        <a href="#" class="inline-flex items-center text-primary font-medium hover:underline minecraft-hover">
+                            查看详情 <i class="fa fa-long-arrow-right ml-2" aria-hidden="true"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="text-center mt-12 fade-in-section">
+                <a href="#" class="inline-block bg-primary hover:bg-primary/90 text-white px-6 py-3 rounded-lg transition-all hover:shadow-lg pixel-btn font-minecraft">
+                    更多作品
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- 游戏截图 -->
+    <section id="screenshots" class="py-20 bg-white relative overflow-hidden">
+        <div class="absolute top-0 right-0 w-1/3 h-full bg-primary/5 -skew-x-12 transform origin-top-right"></div>
+        
+        <div class="container mx-auto px-4 relative z-10">
+            <div class="text-center mb-16 fade-in-section">
+                <h2 class="text-[clamp(1.8rem,4vw,2.5rem)] font-bold text-dark mb-4 font-minecraft text-primary">游戏截图</h2>
+                <div class="w-20 h-1 bg-primary mx-auto rounded-full mb-6"></div>
+                <p class="text-gray-600 max-w-2xl mx-auto">分享一些游戏中的精彩瞬间</p>
+            </div>
+            
+            <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 max-w-6xl mx-auto">
+                <!-- 截图1-8 保持不变 -->
+                <div class="screenshot-item rounded-lg overflow-hidden shadow-md fade-in-section">
+                    <img src="https://picsum.photos/id/131/400/300" alt="Minecraft风景截图" class="w-full h-48 object-cover">
+                </div>
+                <div class="screenshot-item rounded-lg overflow-hidden shadow-md fade-in-section">
+                    <img src="https://picsum.photos/id/142/400/300" alt="建筑截图" class="w-full h-48 object-cover">
+                </div>
+                <div class="screenshot-item rounded-lg overflow-hidden shadow-md fade-in-section">
+                    <img src="https://picsum.photos/id/152/400/300" alt="红石电路截图" class="w-full h-48 object-cover">
+                </div>
+                <div class="screenshot-item rounded-lg overflow-hidden shadow-md fade-in-section">
+                    <img src="https://picsum.photos/id/163/400/300" alt="夜晚风景截图" class="w-full h-48 object-cover">
+                </div>
+                <div class="screenshot-item rounded-lg overflow-hidden shadow-md fade-in-section">
+                    <img src="https://picsum.photos/id/174/400/300" alt="矿物截图" class="w-full h-48 object-cover">
+                </div>
+                <div class="screenshot-item rounded-lg overflow-hidden shadow-md fade-in-section">
+                    <img src="https://picsum.photos/id/185/400/300" alt="农场截图" class="w-full h-48 object-cover">
+                </div>
+                <div class="screenshot-item rounded-lg overflow-hidden shadow-md fade-in-section">
+                    <img src="https://picsum.photos/id/196/400/300" alt="战斗截图" class="w-full h-48 object-cover">
+                </div>
+                <div class="screenshot-item rounded-lg overflow-hidden shadow-md fade-in-section">
+                    <img src="https://picsum.photos/id/207/400/300" alt="海底截图" class="w-full h-48 object-cover">
+                </div>
+            </div>
+            
+            <div class="text-center mt-10 fade-in-section">
+                <button id="view-more-screenshots" class="bg-secondary hover:bg-secondary/90 text-white px-6 py-3 rounded-lg transition-all hover:shadow-lg pixel-btn font-minecraft">
+                    <i class="fa fa-picture-o mr-2" aria-hidden="true"></i>查看更多截图
+                </button>
+            </div>
+        </div>
+    </section>
+
+    <!-- 留言板 -->
+    <section id="messages" class="py-20 bg-gray-50">
+        <div class="container mx-auto px-4">
+            <div class="text-center mb-16 fade-in-section">
+                <h2 class="text-[clamp(1.8rem,4vw,2.5rem)] font-bold text-dark mb-4 font-minecraft text-primary">留言板</h2>
+                <div class="w-20 h-1 bg-primary mx-auto rounded-full mb-6"></div>
+                <p class="text-gray-600 max-w-2xl mx-auto">有什么Minecraft的技巧或建议？欢迎在这里交流</p>
+            </div>
+            
+            <div class="max-w-6xl mx-auto grid md:grid-cols-5 gap-8">
+                <!-- 留言表单 -->
+                <div class="md:col-span-2 fade-in-section">
+                    <div class="bg-white rounded-xl shadow-lg p-6 md:p-8 border border-gray-100 pixel-border">
+                        <h3 class="text-xl font-semibold mb-6 font-minecraft">写下你的留言</h3>
+                        <form id="message-form" class="space-y-4">
+                            <div>
+                                <label for="name" class="block text-sm font-medium text-gray-700 mb-1">游戏ID</label>
+                                <input type="text" id="name" name="name" required
+                                    class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-primary transition-colors"
+                                    placeholder="你的Minecraft名字">
+                            </div>
+                            
+                            <div>
+                                <label for="email" class="block text-sm font-medium text-gray-700 mb-1">邮箱 (选填)</label>
+                                <input type="email" id="email" name="email"
+                                    class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-primary transition-colors"
+                                    placeholder="方便回复的邮箱">
+                            </div>
+                            
+                            <div>
+                                <label for="content" class="block text-sm font-medium text-gray-700 mb-1">留言内容</label>
+                                <textarea id="content" name="content" rows="4" required
+                                    class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-primary transition-colors resize-none"
+                                    placeholder="分享你的Minecraft经验或建议"></textarea>
+                            </div>
+                            
+                            <button type="submit" class="w-full bg-primary hover:bg-primary/90 text-white py-3 rounded-lg transition-colors font-medium pixel-btn font-minecraft">
+                                发送留言
+                            </button>
+                        </form>
+                    </div>
+                </div>
+                
+                <!-- 留言列表 -->
+                <div class="md:col-span-3 fade-in-section">
+                    <div class="bg-white rounded-xl shadow-lg p-6 md:p-8 border border-gray-100 h-full pixel-border">
+                        <h3 class="text-xl font-semibold mb-6 flex items-center font-minecraft">
+                            <i class="fa fa-comments text-primary mr-2" aria-hidden="true"></i>
+                            玩家留言
+                            <span id="message-count" class="ml-2 bg-primary/10 text-primary text-sm px-2 py-1 rounded-full">0</span>
+                        </h3>
+                        
+                        <div id="messages-container" class="space-y-4 max-h-[500px] overflow-y-auto pr-2 gradient-mask-b">
+                            <div class="text-center text-gray-500 py-10">
+                                <i class="fa fa-comment-o text-4xl mb-3 opacity-30" aria-hidden="true"></i>
+                                <p>还没有留言，快来分享你的Minecraft经验吧！</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 页脚 -->
+    <footer class="bg-coal text-white py-12">
+        <div class="container mx-auto px-4">
+            <div class="text-center">
+                <a href="#" class="text-2xl font-bold flex items-center justify-center mb-4 font-minecraft" id="footer-title">
+                    <i class="fa fa-cube mr-2" aria-hidden="true"></i>
+                    <span>Blog Title</span>
+                </a>
+                <p class="text-gray-400 max-w-md mx-auto mb-6" id="footer-subtitle">
+                    Blog description
+                </p>
+                <div class="flex justify-center space-x-4 mb-8">
+                    <a href="#" class="text-gray-400 hover:text-white transition-colors minecraft-hover">
+                        <i class="fa fa-github text-xl" aria-hidden="true"></i>
+                    </a>
+                    <a href="#" class="text-gray-400 hover:text-white transition-colors minecraft-hover">
+                        <i class="fa fa-bilibili text-xl" aria-hidden="true"></i>
+                    </a>
+                    <a href="#" class="text-gray-400 hover:text-white transition-colors minecraft-hover">
+                        <i class="fa fa-youtube-play text-xl" aria-hidden="true"></i>
+                    </a>
+                </div>
+                <div class="text-gray-500 text-sm">
+                    <p>&copy; 2023 <span id="copyright-title">Blog Title</span> - 托管于 GitHub Pages</p>
+                    <p class="mt-1">注意：适度游戏益脑，沉迷游戏伤身</p>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- 返回顶部按钮 -->
+    <button id="back-to-top" class="fixed bottom-8 right-8 bg-primary text-white w-12 h-12 rounded-lg shadow-lg flex items-center justify-center opacity-0 invisible transition-all duration-300 hover:bg-primary/90 pixel-btn">
+        <i class="fa fa-arrow-up" aria-hidden="true"></i>
+    </button>
+
+    <!-- 图片查看器模态框 -->
+    <div id="image-modal" class="fixed inset-0 bg-black/80 z-50 flex items-center justify-center opacity-0 invisible transition-all duration-300">
+        <button id="close-modal" class="absolute top-4 right-4 text-white text-2xl hover:text-gray-300 minecraft-hover">
+            <i class="fa fa-times" aria-hidden="true"></i>
+        </button>
+        <img id="modal-image" src="" alt="大图预览" class="max-w-[90%] max-h-[90vh] object-contain">
+    </div>
+
+    <!-- JavaScript -->
+    <script>
+        // 应用配置数据到页面
+        document.addEventListener('DOMContentLoaded', function() {
+            // 设置标题
+            document.getElementById('blog-title').textContent = `${config.title} - 我的世界小站`;
+            document.getElementById('nav-title').textContent = config.title;
+            document.getElementById('hero-title').textContent = config.title;
+            document.getElementById('hero-subtitle').textContent = config.subTitle;
+            document.getElementById('footer-title').querySelector('span').textContent = config.title;
+            document.getElementById('footer-subtitle').textContent = config.subTitle;
+            document.getElementById('copyright-title').textContent = config.title;
+            
+            // 设置头像
+            document.getElementById('avatar-image').src = config.avatarUrl;
+            document.getElementById('avatar-image').alt = config.title;
+            
+            // 设置版本信息
+            document.getElementById('version-info').textContent = `Version: ${config.GMEEK_VERSION}`;
+            
+            // 初始化其他功能
+            initScrollAnimations();
+            initMessageBoard();
+            initImageViewer();
+            initNavbarEffects();
+        });
+        
+        // 滚动动画初始化
+        function initScrollAnimations() {
+            const fadeElements = document.querySelectorAll('.fade-in-section');
+            
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('is-visible');
+                        observer.unobserve(entry.target);
+                    }
+                });
+            }, { threshold: 0.1 });
+            
+            fadeElements.forEach(element => {
+                observer.observe(element);
+            });
+        }
+        
+        // 留言板功能
+        function initMessageBoard() {
+            const messageForm = document.getElementById('message-form');
+            const messagesContainer = document.getElementById('messages-container');
+            const messageCount = document.getElementById('message-count');
+            
+            // 初始化留言列表
+            function renderMessages(messages) {
+                if (messages.length === 0) {
+                    messagesContainer.innerHTML = `
+                        <div class="text-center text-gray-500 py-10">
+                            <i class="fa fa-comment-o text-4xl mb-3 opacity-30" aria-hidden="true"></i>
+                            <p>还没有留言，快来分享你的Minecraft经验吧！</p>
+                        </div>
+                    `;
+                    messageCount.textContent = '0';
+                    return;
+                }
+                
+                messageCount.textContent = messages.length;
+                messagesContainer.innerHTML = '';
+                
+                messages.reverse().forEach((message, index) => {
+                    const messageEl = document.createElement('div');
+                    messageEl.className = 'bg-gray-50 p-4 rounded-lg shadow-sm message-appear';
+                    messageEl.style.animationDelay = `${index * 0.1}s`;
+                    
+                    messageEl.innerHTML = `
+                        <div class="flex items-start">
+                            <div class="w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center mr-3 flex-shrink-0">
+                                <span class="text-primary font-medium">${message.name.charAt(0)}</span>
+                            </div>
+                            <div class="flex-1">
+                                <div class="flex justify-between items-center mb-1">
+                                    <h4 class="font-medium">${message.name}</h4>
+                                    <span class="text-xs text-gray-500">${formatDate(message.date)}</span>
+                                </div>
+                                <p class="text-gray-600 text-sm">${message.content}</p>
+                            </div>
+                        </div>
+                    `;
+                    
+                    messagesContainer.appendChild(messageEl);
+                });
+            }
+            
+            // 格式化日期
+            function formatDate(dateString) {
+                const date = new Date(dateString);
+                return `${date.getFullYear()}-${(date.getMonth() + 1).toString().padStart(2, '0')}-${date.getDate().toString().padStart(2, '0')} ${date.getHours().toString().padStart(2, '0')}:${date.getMinutes().toString().padStart(2, '0')}`;
+            }
+            
+            // 加载现有留言
+            const messages = JSON.parse(localStorage.getItem('minecraftMessages') || '[]');
+            renderMessages(messages);
+            
+            // 提交留言
+            messageForm.addEventListener('submit', function(e) {
+                e.preventDefault();
+                
+                const name = document.getElementById('name').value;
+                const email = document.getElementById('email').value;
+                const content = document.getElementById('content').value;
+                
+                const newMessage = {
+                    name,
+                    email,
+                    content,
+                    date: new Date().toISOString()
+                };
+                
+                const messages = JSON.parse(localStorage.getItem('minecraftMessages') || '[]');
+                messages.push(newMessage);
+                localStorage.setItem('minecraftMessages', JSON.stringify(messages));
+                
+                renderMessages(messages);
+                messageForm.reset();
+                
+                const submitBtn = messageForm.querySelector('button[type="submit"]');
+                const originalText = submitBtn.textContent;
+                submitBtn.disabled = true;
+                submitBtn.textContent = '发送成功！';
+                
+                setTimeout(() => {
+                    submitBtn.disabled = false;
+                    submitBtn.textContent = originalText;
+                }, 2000);
+            });
+        }
+        
+        // 图片查看器功能
+        function initImageViewer() {
+            const imageModal = document.getElementById('image-modal');
+            const modalImage = document.getElementById('modal-image');
+            const closeModal = document.getElementById('close-modal');
+            const screenshotItems = document.querySelectorAll('.screenshot-item img');
+            const viewMoreBtn = document.getElementById('view-more-screenshots');
+            
+            screenshotItems.forEach(img => {
+                img.addEventListener('click', function() {
+                    modalImage.src = this.src;
+                    modalImage.alt = this.alt;
+                    imageModal.classList.remove('opacity-0', 'invisible');
+                    imageModal.classList.add('opacity-100', 'visible');
+                    document.body.style.overflow = 'hidden';
+                });
+            });
+            
+            function closeImageModal() {
+                imageModal.classList.add('opacity-0', 'invisible');
+                imageModal.classList.remove('opacity-100', 'visible');
+                document.body.style.overflow = '';
+            }
+            
+            closeModal.addEventListener('click', closeImageModal);
+            imageModal.addEventListener('click', function(e) {
+                if (e.target === imageModal) {
+                    closeImageModal();
+                }
+            });
+            
+            viewMoreBtn.addEventListener('click', function() {
+                alert('更多截图正在整理中，敬请期待！');
+            });
+        }
+        
+        // 导航栏效果
+        function initNavbarEffects() {
+            const navbar = document.getElementById('navbar');
+            const backToTop = document.getElementById('back-to-top');
+            const menuToggle = document.getElementById('menu-toggle');
+            const mobileMenu = document.getElementById('mobile-menu');
+            
+            window.addEventListener('scroll', function() {
+                if (window.scrollY > 100) {
+                    navbar.classList.add('py-2', 'shadow-md');
+                    navbar.classList.remove('py-4');
+                    
+                    backToTop.classList.remove('opacity-0', 'invisible');
+                    backToTop.classList.add('opacity-100', 'visible');
+                } else {
+                    navbar.classList.add('py-4');
+                    navbar.classList.remove('py-2', 'shadow-md');
+                    
+                    backToTop.classList.add('opacity-0', 'invisible');
+                    backToTop.classList.remove('opacity-100', 'visible');
+                }
+            });
+            
+            menuToggle.addEventListener('click', function() {
+                mobileMenu.classList.toggle('hidden');
+            });
+            
+            backToTop.addEventListener('click', function() {
+                window.scrollTo({
+                    top: 0,
+                    behavior: 'smooth'
+                });
+            });
+        }
+    </script>
+</body>
+</html>
