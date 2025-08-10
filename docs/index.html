@@ -249,7 +249,60 @@
         .block-bg {
             background-image: url("data:image/svg+xml,%3Csvg width='16' height='16' viewBox='0 0 16 16' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M0 0h16v2h-6v6h6v8H8v-6H2v6H0V0zm4 4h2v2H4V4zm8 8h2v2h-2v-2zm-8 0h2v2H4v-2zm8-8h2v2h-2V4z' fill='%239C92AC' fill-opacity='0.03' fill-rule='evenodd'/%3E%3C/svg%3E");
         }
-    </style>
+    
+/* Smooth mobile menu animation */
+#mobile-menu {
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.3s ease;
+}
+#mobile-menu.open {
+    max-height: 500px;
+}
+
+/* Back to top smooth scaling */
+#back-to-top {
+    transform: scale(0.8);
+    transition: opacity 0.3s ease, transform 0.3s ease;
+}
+#back-to-top.visible {
+    transform: scale(1);
+}
+
+/* Button glow enhancement */
+.glow-btn:hover {
+    box-shadow: 0 0 8px rgba(85,170,85,0.8), 0 0 16px rgba(85,170,85,0.6);
+    transform: translateY(-2px) scale(1.02);
+}
+
+/* Card stagger animation */
+.fade-in {
+    opacity: 0;
+    transform: translateY(20px);
+    transition: all 0.6s ease;
+}
+.fade-in.visible {
+    opacity: 1;
+    transform: translateY(0);
+}
+.fade-in:nth-child(1) { transition-delay: 0.1s; }
+.fade-in:nth-child(2) { transition-delay: 0.2s; }
+.fade-in:nth-child(3) { transition-delay: 0.3s; }
+
+/* Background parallax effect */
+.block-bg {
+    background-attachment: fixed;
+    background-size: cover;
+}
+
+/* Minecraft texture backgrounds */
+.bg-texture-stone {
+    background-image: url('https://i.imgur.com/5QFZ9Vh.png');
+    background-size: 64px 64px;
+    background-repeat: repeat;
+}
+
+</style>
 </head>
 
 <body class="bg-gray-50 font-sans block-bg">
@@ -435,11 +488,14 @@
                     <div class="bg-gray-100 dark:bg-gray-800 p-8 rounded-2xl shadow-lg border border-gray-200 dark:border-gray-700">
                         <h3 class="text-3xl font-semibold mb-6 font-minecraft text-primary">你好！我是LunaCat</h3>
                         <p class="text-gray-600 dark:text-gray-300 mb-6 leading-relaxed text-lg">
-                            一名热爱编程和游戏的学生，喜欢在数字世界中探索和创造。
-                        </p>
-                        <p class="text-gray-600 dark:text-gray-300 mb-8 leading-relaxed text-lg">
-                            这个小站用来分享我的学习笔记、技术心得和生活感悟。欢迎大家一起交流学习！
-                        </p>
+    一名热爱Minecraft的中学生，喜欢在方块世界中建造、探索和创造。
+</p>
+<p class="text-gray-600 dark:text-gray-300 mb-8 leading-relaxed text-lg">
+    从小学就开始接触Minecraft，最喜欢的玩法是创造模式和红石电路。这个小站用来记录我的游戏心得和作品。
+</p>
+<p class="text-gray-600 dark:text-gray-300 mb-8 leading-relaxed text-lg">
+    欢迎大家交流Minecraft的玩法和技巧！
+</p>
                         
                         <div class="flex flex-wrap gap-3">
                             <span class="bg-primary/10 text-primary px-4 py-2 rounded-full text-sm font-medium">编程爱好者</span>
@@ -609,7 +665,7 @@
         // 移动端菜单切换
         document.getElementById('mobile-menu-btn').addEventListener('click', function() {
             const mobileMenu = document.getElementById('mobile-menu');
-            mobileMenu.classList.toggle('hidden');
+            mobileMenu.classList.toggle('open');
         });
         
         // 渲染文章列表
@@ -728,7 +784,28 @@
             setAvatars();
             document.getElementById('gmeek-version').textContent = config.GMEEK_VERSION;
         });
-    </script>
+    
+
+// Toggle between article list and content
+function showArticleList() {
+    document.getElementById('post-list').classList.remove('hidden');
+    const articleView = document.getElementById('article-view');
+    if(articleView) articleView.classList.add('hidden');
+}
+function showArticleContent(html) {
+    document.getElementById('post-list').classList.add('hidden');
+    let articleView = document.getElementById('article-view');
+    if(!articleView) {
+        articleView = document.createElement('div');
+        articleView.id = 'article-view';
+        articleView.className = 'bg-white dark:bg-gray-900 rounded-xl shadow-md p-6';
+        document.getElementById('posts').appendChild(articleView);
+    }
+    articleView.innerHTML = html;
+    articleView.classList.remove('hidden');
+}
+
+</script>
 </body>
 </html>
                 
