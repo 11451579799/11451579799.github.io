@@ -1,845 +1,165 @@
-<html lang="zh-CN"><head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title id="blog-title">LunaCat的小站</title>
-    <meta name="description" content="欢迎来到我的小站">
-    <meta property="og:title" content="LunaCat的小站">
-    <meta property="og:description" content="欢迎来到我的小站">
-    <meta property="og:image" id="og-image" content="">
-    <link rel="icon" id="favicon" type="image/png" href="">
+<!DOCTYPE html>
+<html data-color-mode="light" data-dark-theme="dark" data-light-theme="light" lang="zh-CN">
+<head>
+    <meta content="text/html; charset=utf-8" http-equiv="content-type" />
+    <meta name="viewport" content="width=device-width,initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <link href='https://mirrors.sustech.edu.cn/cdnjs/ajax/libs/Primer/21.0.7/primer.css' rel='stylesheet' />
     
-    <!-- 引入外部资源 -->
-    <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://cdn.jsdelivr.net/npm/font-awesome@4.7.0/css/font-awesome.min.css" rel="stylesheet">
-    <!-- GMEEK指定的Primer CSS -->
-    <link href="https://mirrors.sustech.edu.cn/cdnjs/ajax/libs/Primer/21.0.7/primer.css" rel="stylesheet">
-    
-    <!-- Tailwind配置 - 基于GMEEK颜色配置 -->
-    <script>
-        tailwind.config = {
-            theme: {
-                extend: {
-                    colors: {
-                        primary: '#006b75', // 使用commentLabelColor作为主色
-                        year1: '#bc4c00',
-                        year2: '#0969da',
-                        year3: '#1f883d',
-                        year4: '#A333D0',
-                        // 标签颜色沿用GMEEK配置
-                        bug: '#d73a4a',
-                        documentation: '#0075ca',
-                        duplicate: '#cfd3d7',
-                        enhancement: '#a2eeef',
-                        'good-first-issue': '#7057ff',
-                        'help-wanted': '#008672',
-                        invalid: '#e4e669',
-                        question: '#d876e3',
-                        wontfix: '#ffffff',
-                    },
-                    fontFamily: {
-                        minecraft: ['"Press Start 2P"', 'monospace', 'sans-serif'],
-                    },
-                }
-            }
-        }
+    <link rel="icon" href="file:///C:/Users/e180/Downloads/mcpfp%20-%20LunaCatX.png"><script>
+        let theme = localStorage.getItem("meek_theme") || "light";
+        document.documentElement.setAttribute("data-color-mode", theme);
     </script>
-    
-    <style type="text/tailwindcss">
-        @layer utilities {
-            .content-auto {
-                content-visibility: auto;
-            }
-            .pixel-border {
-                box-shadow: 0 -4px 0 4px rgba(0,0,0,0.2), 
-                            4px 0 0 4px rgba(0,0,0,0.2), 
-                            0 4px 0 4px rgba(0,0,0,0.2), 
-                            -4px 0 0 4px rgba(0,0,0,0.2);
-            }
-            .minecraft-hover {
-                @apply transition-all duration-200 hover:scale-105 active:scale-95;
-            }
-            .text-shadow {
-                text-shadow: 2px 2px 0px rgba(0, 0, 0, 0.8);
-            }
-            .block-bg {
-                background-image: url("data:image/svg+xml,%3Csvg width='16' height='16' viewBox='0 0 16 16' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M0 0h16v2h-6v6h6v8H8v-6H2v6H0V0zm4 4h2v2H4V4zm8 8h2v2h-2v-2zm-8 0h2v2H4v-2zm8-8h2v2h-2V4z' fill='%239C92AC' fill-opacity='0.05' fill-rule='evenodd'/%3E%3C/svg%3E");
-            }
-        }
-        
-        /* 基础样式 */
-        html {
-            scroll-behavior: smooth;
-        }
-        
-        body {
-            transition: background-color 0.3s ease, color 0.3s ease;
-        }
-        
-        /* 暗色模式样式 - 加深所有背景色并提高对比度 */
-        body.dark {
-            background-color: #0a0a0a; /* 更深的主背景 */
-            color: #ffffff; /* 主文本为纯白色 */
-        }
-        
-        body.dark .bg-white {
-            background-color: #121212; /* 深色卡片背景 */
-        }
-        
-        body.dark .bg-gray-50 {
-            background-color: #0f0f0f; /* 更深的浅灰色背景 */
-        }
-        
-        body.dark .text-gray-600 {
-            color: #e8e8e8; /* 更亮的次要文本 */
-        }
-        
-        body.dark .text-gray-700 {
-            color: #ffffff; /* 主要文本为纯白色 */
-        }
-        
-        body.dark .border-gray-300 {
-            border-color: #2a2a2a; /* 深色边框 */
-        }
-        
-        body.dark .bg-gray-100 {
-            background-color: #1a1a1a; /* 深色背景元素 */
-        }
-        
-        /* 暗色模式下的卡片和区块 */
-        body.dark .blog-card {
-            background-color: #121212;
-            border-color: #252525;
-        }
-        
-        body.dark .screenshot-item {
-            background-color: #121212;
-            border: 1px solid #252525;
-        }
-        
-        /* 暗色模式下的链接和强调文本 */
-        body.dark a {
-            color: #61dafb; /* 更亮的链接颜色 */
-        }
-        
-        body.dark a:hover {
-            color: #98e6fc; /* 悬停时更亮 */
-        }
-        
-        /* 像素风格滚动条 - 适应深色模式 */
-        ::-webkit-scrollbar {
-            width: 12px;
-            height: 12px;
-        }
-        ::-webkit-scrollbar-track {
-            background: #f1f1f1;
-            border: 2px solid #ddd;
-        }
-        ::-webkit-scrollbar-thumb {
-            background: #006b75;
-            border: 2px solid #005a64;
-        }
-        ::-webkit-scrollbar-thumb:hover {
-            background: #005a64;
-        }
-        
-        body.dark ::-webkit-scrollbar-track {
-            background: #121212;
-            border: 2px solid #252525;
-        }
-        
-        /* 像素按钮效果 */
-        .pixel-btn {
-            position: relative;
-            top: 0;
-            left: 0;
-            transition: all 0.1s ease;
-        }
-        .pixel-btn:hover {
-            top: -2px;
-            left: -2px;
-        }
-        .pixel-btn:active {
-            top: 2px;
-            left: 2px;
-        }
-        
-        /* 卡片悬停效果 */
-        .blog-card {
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-        }
-        .blog-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
-        }
-        
-        /* 滚动动画 */
-        .fade-in {
-            opacity: 0;
-            transform: translateY(20px);
-            transition: opacity 0.6s ease-out, transform 0.6s ease-out;
-        }
-        .fade-in.visible {
-            opacity: 1;
-            transform: translateY(0);
-        }
-        
-        /* 图片悬停效果 */
-        .screenshot-item {
-            overflow: hidden;
-            transition: all 0.3s ease;
-        }
-        .screenshot-item img {
-            transition: transform 0.5s ease;
-        }
-        .screenshot-item:hover img {
-            transform: scale(1.1);
-        }
-    </style>
+<meta name="description" content="欢迎来到我的小站">
+<meta property="og:title" content="LunaCat的小站">
+<meta property="og:description" content="欢迎来到我的小站">
+<meta property="og:type" content="blog">
+<meta property="og:url" content="https://11451579799.github.io">
+<meta property="og:image" content="file:///C:/Users/e180/Downloads/mcpfp%20-%20LunaCatX.png">
+<title>LunaCat的小站</title>
+
 </head>
+<style>
+body{box-sizing: border-box;min-width: 200px;max-width: 900px;margin: 20px auto;padding: 45px;font-size: 16px;font-family: sans-serif;line-height: 1.25;}
+#header{display:flex;padding-bottom:8px;border-bottom: 1px solid var(--borderColor-muted, var(--color-border-muted));margin-bottom: 16px;}
+#footer {margin-top:64px; text-align: center;font-size: small;}
 
-<body class="bg-gray-50 font-sans block-bg">
-    <!-- 配置数据 -->
-    <script>
-        const config = {
-            "singlePage": [],
-            "startSite": "",
-            "filingNum": "",
-            "onePageListNum": 15,
-            "commentLabelColor": "#006b75",
-            "yearColorList": ["#bc4c00", "#0969da", "#1f883d", "#A333D0"],
-            "i18n": "CN",
-            "themeMode": "manual",
-            "dayTheme": "light",
-            "nightTheme": "dark",
-            "urlMode": "pinyin",
-            "script": "",
-            "style": "",
-            "head": "",
-            "indexScript": "",
-            "indexStyle": "",
-            "bottomText": "",
-            "showPostSource": 1,
-            "iconList": {},
-            "UTC": 8,
-            "rssSplit": "sentence",
-            "exlink": {},
-            "needComment": 1,
-            "allHead": "",
-            "title": "LunaCat的小站",
-            "subTitle": "欢迎来到我的小站",
-            "avatarUrl": "file:///C:/Users/e180/Downloads/mcpfp%20-%20LunaCatX.png",
-            "GMEEK_VERSION": "last",
-            "postListJson": {
-                "P2": {
-                    "htmlDir": "docs/post/ce-shi.html",
-                    "labels": ["documentation"],
-                    "postTitle": "测试",
-                    "postUrl": "post/ce-shi.html",
-                    "postSourceUrl": "https://github.com/11451579799/11451579799.github.io/issues/2",
-                    "commentNum": 0,
-                    "wordCount": 11,
-                    "description": "Hello world。",
-                    "top": 0,
-                    "createdAt": 1754785594,
-                    "style": "",
-                    "script": "",
-                    "head": "",
-                    "ogImage": "file:///C:/Users/e180/Downloads/mcpfp%20-%20LunaCatX.png",
-                    "createdDate": "2025-08-10",
-                    "dateLabelColor": "#0969da"
-                }
-            },
-            "singeListJson": {},
-            "labelColorDict": {
-                "bug": "#d73a4a",
-                "documentation": "#0075ca",
-                "duplicate": "#cfd3d7",
-                "enhancement": "#a2eeef",
-                "good first issue": "#7057ff",
-                "help wanted": "#008672",
-                "invalid": "#e4e669",
-                "question": "#d876e3",
-                "wontfix": "#ffffff"
-            },
-            "displayTitle": "LunaCat的小站",
-            "faviconUrl": "file:///C:/Users/e180/Downloads/mcpfp%20-%20LunaCatX.png",
-            "ogImage": "file:///C:/Users/e180/Downloads/mcpfp%20-%20LunaCatX.png",
-            "primerCSS": "<link href='https://mirrors.sustech.edu.cn/cdnjs/ajax/libs/Primer/21.0.7/primer.css' rel='stylesheet' />",
-            "homeUrl": "https://11451579799.github.io",
-            "prevUrl": "disabled",
-            "nextUrl": "disabled"
-        };
+</style>
 
-        // 初始化配置
-        document.addEventListener('DOMContentLoaded', function() {
-            // 应用标题和描述
-            document.getElementById('blog-title').textContent = config.title;
-            document.querySelector('meta[name="description"]').setAttribute('content', config.subTitle);
-            document.querySelector('meta[property="og:title"]').setAttribute('content', config.title);
-            document.querySelector('meta[property="og:description"]').setAttribute('content', config.subTitle);
-            
-            // 应用图片（注意：本地图片需替换为在线URL才能正常显示）
-            const avatarImg = document.getElementById('avatar-image');
-            avatarImg.src = config.avatarUrl;
-            avatarImg.alt = config.title;
-            
-            document.getElementById('favicon').setAttribute('href', config.faviconUrl);
-            document.getElementById('og-image').setAttribute('content', config.ogImage);
-            
-            // 初始化主题
-            if (config.themeMode === 'manual') {
-                // 默认使用日间主题
-                setTheme(config.dayTheme);
-            }
-            
-            // 加载文章列表
-            renderPostList();
-            
-            // 初始化滚动动画
-            initScrollAnimations();
-        });
-    </script>
+<style>
+.avatar {transition: 0.8s;width:64px;height:64px;object-fit: cover;}
+.avatar:hover{transform: scale(1.15) rotate(360deg);}
+#header h1 a{color:inherit;text-decoration:none;vertical-align: bottom;font-size:40px;font-family:Monaco;margin-left:8px;}
+.title-right{display:flex;margin:auto 0 0 auto;}
+.title-right button{margin-right:8px;padding:16px;}
+.title-right .circle{padding: 14px 16px;}
 
-    <!-- 导航栏 -->
-    <header class="fixed w-full bg-white/80 dark:bg-gray-900/90 backdrop-blur-md z-50 shadow-sm transition-all duration-300">
-        <div class="container mx-auto px-4 py-3">
-            <div class="flex justify-between items-center">
-                <!-- 网站标题 -->
-                <a href="#" class="flex items-center space-x-2 minecraft-hover">
-                    <img src="https://p3-flow-imagex-sign.byteimg.com/tos-cn-i-a9rns2rl98/rc/pc/code_assistant/34f9c2185bde491bb2a5036f69778a78~tplv-a9rns2rl98-image.image?rcl=2025081012344327BC15D7F98F82F230A6&amp;rk3s=8e244e95&amp;rrcfp=e75484ac&amp;x-expires=1755405283&amp;x-signature=OAi4EL1gkWVuc3Rx2Ug%2FPSa4O20%3D" id="nav-avatar" alt="Logo" class="w-8 h-8 rounded-full">
-                    <span class="font-minecraft text-lg text-primary font-bold">LunaCat的小站</span>
-                </a>
-                
-                <!-- 导航链接 -->
-                <nav class="hidden md:flex items-center space-x-6">
-                    <a href="#home" class="hover:text-primary transition-colors">首页</a>
-                    <a href="#posts" class="hover:text-primary transition-colors">文章</a>
-                    <a href="#screenshots" class="hover:text-primary transition-colors">游戏截图</a>
-                    <a href="#about" class="hover:text-primary transition-colors">关于我</a>
-                    <a href="#comments" class="hover:text-primary transition-colors">留言</a>
-                    
-                    <!-- 主题切换按钮 -->
-                    <button id="theme-toggle" class="p-2 rounded-full hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors">
-                        <i class="fa fa-sun-o text-yellow-500 dark:hidden" aria-hidden="true"></i>
-                        <i class="fa fa-moon-o text-gray-300 hidden dark:inline" aria-hidden="true"></i>
-                    </button>
-                </nav>
-                
-                <!-- 移动端菜单按钮 -->
-                <div class="flex items-center md:hidden">
-                    <button id="mobile-theme-toggle" class="p-2 mr-2 rounded-full hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors">
-                        <i class="fa fa-sun-o text-yellow-500 dark:hidden" aria-hidden="true"></i>
-                        <i class="fa fa-moon-o text-gray-300 hidden dark:inline" aria-hidden="true"></i>
-                    </button>
-                    <button id="mobile-menu-btn" class="p-2 rounded-full hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors">
-                        <i class="fa fa-bars" aria-hidden="true"></i>
-                    </button>
-                </div>
-            </div>
-            
-            <!-- 移动端菜单 -->
-            <div id="mobile-menu" class="md:hidden hidden mt-3 pb-2">
-                <div class="flex flex-col space-y-3">
-                    <a href="#home" class="hover:text-primary transition-colors py-2">首页</a>
-                    <a href="#posts" class="hover:text-primary transition-colors py-2">文章</a>
-                    <a href="#screenshots" class="hover:text-primary transition-colors py-2">游戏截图</a>
-                    <a href="#about" class="hover:text-primary transition-colors py-2">关于我</a>
-                    <a href="#comments" class="hover:text-primary transition-colors py-2">留言</a>
-                </div>
-            </div>
-        </div>
-    </header>
+.SideNav{min-width: 360px;}
+.SideNav-icon{margin-right: 16px}
+.SideNav-item .Label{color: #fff;margin-left:4px;}
+.d-flex{min-width:0;}
+.listTitle{overflow:hidden;white-space:nowrap;text-overflow: ellipsis;max-width: 100%;}
+.listLabels{white-space:nowrap;display:flex;}
+.listLabels object{max-height:16px;max-width:24px;}
 
-    <!-- 英雄区域 -->
-    <section id="home" class="pt-28 pb-20 md:pt-40 md:pb-32 px-4 relative">
-        <div class="absolute inset-0 bg-gradient-to-br from-primary/5 to-primary/10 -z-10 dark:from-primary/10 dark:to-primary/5"></div>
-        <div class="container mx-auto max-w-5xl text-center">
-            <div class="inline-block mb-8">
-                <div class="w-32 h-32 md:w-40 md:h-40 rounded-full overflow-hidden border-4 border-white dark:border-gray-800 shadow-lg pixel-border mx-auto">
-                    <img id="avatar-image" src="https://p3-flow-imagex-sign.byteimg.com/tos-cn-i-a9rns2rl98/rc/pc/code_assistant/ea6c7c4dd7d143f18dfe71ccfdb00d82~tplv-a9rns2rl98-image.image?rcl=20250810123435CF297AF83C36C5B12C45&amp;rk3s=8e244e95&amp;rrcfp=e75484ac&amp;x-expires=1755405276&amp;x-signature=bUACUC7xTTUO3MFoTOrO7yUIl6Y%3D" alt="LunaCat的头像" class="w-full h-full object-cover">
-                </div>
-            </div>
-            
-            <h1 class="text-4xl md:text-5xl lg:text-6xl font-bold mb-6 font-minecraft text-shadow fade-in">
-                LunaCat的小站
-            </h1>
-            
-            <p class="text-xl md:text-2xl text-gray-600 dark:text-gray-300 mb-10 max-w-2xl mx-auto fade-in">
-                欢迎来到我的小站
-            </p>
-            
-            <div class="flex flex-wrap justify-center gap-4 fade-in">
-                <a href="#posts" class="bg-primary hover:bg-primary/90 text-white px-6 py-3 rounded-lg shadow-md pixel-btn transition-all">
-                    <i class="fa fa-file-text-o mr-2" aria-hidden="true"></i>我的文章
-                </a>
-                <a href="#screenshots" class="bg-white dark:bg-gray-800 hover:bg-gray-100 dark:hover:bg-gray-700 text-gray-800 dark:text-white px-6 py-3 rounded-lg shadow-md pixel-btn transition-all border border-gray-200 dark:border-gray-700">
-                    <i class="fa fa-picture-o mr-2" aria-hidden="true"></i>游戏截图
-                </a>
-            </div>
-            
-            <!-- 版本信息 -->
-            <div class="mt-12 text-sm text-gray-500 dark:text-gray-400 fade-in">
-                <p>GMEEK 版本: <span id="gmeek-version">last</span> | 最后更新: 2025-08-10</p>
-            </div>
-        </div>
-    </section>
+@media (max-width: 600px) {
+    body {padding: 8px;}
+    .avatar {width:40px;height:40px;}
+    .blogTitle{display:none;}
+    #buttonRSS{display:none;}
+    .LabelTime{display:none;}
+}
+</style>
 
-    <!-- 文章列表 -->
-    <section id="posts" class="py-16 px-4 bg-white dark:bg-gray-900">
-        <div class="container mx-auto max-w-6xl">
-            <div class="text-center mb-12 fade-in">
-                <h2 class="text-3xl md:text-4xl font-bold mb-4 font-minecraft">我的文章</h2>
-                <div class="w-20 h-1 bg-primary mx-auto rounded-full"></div>
-            </div>
-            
-            <div id="post-list" class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-                <!-- 文章列表将通过JavaScript动态生成 -->
-            </div>
-            
-            <!-- 没有更多文章时显示 -->
-            <div id="no-more-posts" class="text-center py-16 hidden fade-in">
-                <i class="fa fa-file-text-o text-5xl text-gray-300 dark:text-gray-600 mb-4" aria-hidden="true"></i>
-                <p class="text-gray-500 dark:text-gray-400">目前没有更多文章</p>
-            </div>
-        </div>
-    </section>
 
-    <!-- 游戏截图 -->
-    <section id="screenshots" class="py-16 px-4 bg-gray-50 dark:bg-gray-800">
-        <div class="container mx-auto max-w-6xl">
-            <div class="text-center mb-12 fade-in">
-                <h2 class="text-3xl md:text-4xl font-bold mb-4 font-minecraft">游戏截图</h2>
-                <div class="w-20 h-1 bg-primary mx-auto rounded-full"></div>
-                <p class="mt-4 text-gray-600 dark:text-gray-300 max-w-2xl mx-auto">分享我的Minecraft游戏瞬间</p>
-            </div>
-            
-            <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 fade-in">
-                <div class="screenshot-item rounded-lg overflow-hidden shadow-md">
-                    <img src="https://picsum.photos/id/131/400/300" alt="Minecraft风景" class="w-full h-48 object-cover">
-                </div>
-                <div class="screenshot-item rounded-lg overflow-hidden shadow-md">
-                    <img src="https://picsum.photos/id/142/400/300" alt="建筑作品" class="w-full h-48 object-cover">
-                </div>
-                <div class="screenshot-item rounded-lg overflow-hidden shadow-md">
-                    <img src="https://picsum.photos/id/152/400/300" alt="红石电路" class="w-full h-48 object-cover">
-                </div>
-                <div class="screenshot-item rounded-lg overflow-hidden shadow-md">
-                    <img src="https://picsum.photos/id/163/400/300" alt="夜晚场景" class="w-full h-48 object-cover">
-                </div>
-                <div class="screenshot-item rounded-lg overflow-hidden shadow-md">
-                    <img src="https://picsum.photos/id/174/400/300" alt="矿物采集" class="w-full h-48 object-cover">
-                </div>
-                <div class="screenshot-item rounded-lg overflow-hidden shadow-md">
-                    <img src="https://picsum.photos/id/185/400/300" alt="农场" class="w-full h-48 object-cover">
-                </div>
-                <div class="screenshot-item rounded-lg overflow-hidden shadow-md">
-                    <img src="https://picsum.photos/id/196/400/300" alt="战斗场景" class="w-full h-48 object-cover">
-                </div>
-                <div class="screenshot-item rounded-lg overflow-hidden shadow-md">
-                    <img src="https://picsum.photos/id/207/400/300" alt="海底探索" class="w-full h-48 object-cover">
-                </div>
-            </div>
-            
-            <div class="text-center mt-10 fade-in">
-                <button class="bg-primary hover:bg-primary/90 text-white px-6 py-3 rounded-lg shadow-md pixel-btn transition-all">
-                    <i class="fa fa-plus mr-2" aria-hidden="true"></i>加载更多截图
-                </button>
-            </div>
-        </div>
-    </section>
 
-    <!-- 关于我 -->
-    <section id="about" class="py-16 px-4 bg-white dark:bg-gray-900">
-        <div class="container mx-auto max-w-5xl">
-            <div class="text-center mb-12 fade-in">
-                <h2 class="text-3xl md:text-4xl font-bold mb-4 font-minecraft">关于我</h2>
-                <div class="w-20 h-1 bg-primary mx-auto rounded-full"></div>
-            </div>
-            
-            <div class="grid md:grid-cols-2 gap-10 items-center">
-                <div class="fade-in">
-                    <div class="bg-gray-100 dark:bg-gray-800 p-6 rounded-xl shadow-sm">
-                        <h3 class="text-2xl font-semibold mb-4 font-minecraft">你好！我是LunaCat</h3>
-                        <p class="text-gray-600 dark:text-gray-300 mb-4 leading-relaxed">
-                            一名热爱Minecraft的中学生，喜欢在方块世界中建造、探索和创造。
-                        </p>
-                        <p class="text-gray-600 dark:text-gray-300 mb-4 leading-relaxed">
-                            从小学就开始接触Minecraft，最喜欢的玩法是创造模式和红石电路。这个小站用来记录我的游戏心得和作品。
-                        </p>
-                        <p class="text-gray-600 dark:text-gray-300 mb-6 leading-relaxed">
-                            欢迎大家交流Minecraft的玩法和技巧！
-                        </p>
-                        
-                        <div class="flex flex-wrap gap-3">
-                            <a href="#" class="flex items-center bg-gray-200 dark:bg-gray-700 hover:bg-gray-300 dark:hover:bg-gray-600 px-4 py-2 rounded-lg transition-colors">
-                                <i class="fa fa-github mr-2" aria-hidden="true"></i> GitHub
-                            </a>
-                            <a href="#" class="flex items-center bg-gray-200 dark:bg-gray-700 hover:bg-gray-300 dark:hover:bg-gray-600 px-4 py-2 rounded-lg transition-colors">
-                                <i class="fa fa-youtube-play mr-2" aria-hidden="true"></i> YouTube
-                            </a>
-                            <a href="#" class="flex items-center bg-gray-200 dark:bg-gray-700 hover:bg-gray-300 dark:hover:bg-gray-600 px-4 py-2 rounded-lg transition-colors">
-                                <i class="fa fa-envelope mr-2" aria-hidden="true"></i> 邮箱
-                            </a>
-                        </div>
-                    </div>
-                </div>
-                
-                <div class="relative fade-in">
-                    <div class="absolute -top-4 -left-4 w-full h-full bg-primary/20 rounded-xl -z-10"></div>
-                    <img src="https://picsum.photos/id/1076/600/800" alt="玩Minecraft的照片" class="w-full h-auto rounded-xl shadow-md">
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- 留言区 -->
-    <section id="comments" class="py-16 px-4 bg-gray-50 dark:bg-gray-800">
-        <div class="container mx-auto max-w-5xl">
-            <div class="text-center mb-12 fade-in">
-                <h2 class="text-3xl md:text-4xl font-bold mb-4 font-minecraft">留言板</h2>
-                <div class="w-20 h-1 bg-primary mx-auto rounded-full"></div>
-                <p class="mt-4 text-gray-600 dark:text-gray-300 max-w-2xl mx-auto">有什么想对我说的？欢迎留言交流</p>
-            </div>
-            
-            <div class="grid md:grid-cols-5 gap-8">
-                <!-- 留言表单 -->
-                <div class="md:col-span-2 fade-in">
-                    <div class="bg-white dark:bg-gray-900 rounded-xl shadow-md p-6 border border-gray-200 dark:border-gray-700">
-                        <h3 class="text-xl font-semibold mb-6 font-minecraft">写下你的留言</h3>
-                        <form id="comment-form" class="space-y-4">
-                            <div>
-                                <label for="comment-name" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">你的名字</label>
-                                <input type="text" id="comment-name" required="" class="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-800 focus:ring-2 focus:ring-primary focus:border-primary transition-colors">
-                            </div>
-                            
-                            <div>
-                                <label for="comment-content" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">留言内容</label>
-                                <textarea id="comment-content" rows="4" required="" class="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-800 focus:ring-2 focus:ring-primary focus:border-primary transition-colors resize-none"></textarea>
-                            </div>
-                            
-                            <button type="submit" class="w-full bg-primary hover:bg-primary/90 text-white py-3 rounded-lg transition-colors font-medium pixel-btn">
-                                发送留言
-                            </button>
-                        </form>
-                    </div>
-                </div>
-                
-                <!-- 留言列表 -->
-                <div class="md:col-span-3 fade-in">
-                    <div class="bg-white dark:bg-gray-900 rounded-xl shadow-md p-6 border border-gray-200 dark:border-gray-700 h-full">
-                        <h3 class="text-xl font-semibold mb-6 font-minecraft">
-                            <i class="fa fa-comments text-primary mr-2" aria-hidden="true"></i>
-                            最近留言
-                            <span id="comment-count" class="ml-2 bg-primary/10 text-primary text-sm px-2 py-1 rounded-full">0</span>
-                        </h3>
-                        
-                        <div id="comments-container" class="space-y-4 max-h-[500px] overflow-y-auto pr-2">
-                            <div class="text-center text-gray-500 dark:text-gray-400 py-10">
-                                <i class="fa fa-comment-o text-4xl mb-3 opacity-30" aria-hidden="true"></i>
-                                <p>还没有留言，快来抢沙发吧！</p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- 页脚 -->
-    <footer class="bg-gray-900 text-white py-12 px-4">
-        <div class="container mx-auto max-w-5xl">
-            <div class="text-center">
-                <div class="flex items-center justify-center mb-6">
-                    <img src="https://p3-flow-imagex-sign.byteimg.com/tos-cn-i-a9rns2rl98/rc/pc/code_assistant/55900aefea1746a1987f0cf7dbd91b5e~tplv-a9rns2rl98-image.image?rcl=20250810124207097F5C26F73F5BCBAD04&amp;rk3s=8e244e95&amp;rrcfp=e75484ac&amp;x-expires=1755405727&amp;x-signature=F51lqYh6By8GYNyRXVp3hDEDGnY%3D" id="footer-avatar" alt="LunaCat" class="w-12 h-12 rounded-full mr-3">
-                    <h3 class="text-2xl font-bold font-minecraft">LunaCat的小站</h3>
-                </div>
-                
-                <p class="text-gray-400 max-w-md mx-auto mb-8">
-                    欢迎来到我的小站
-                </p>
-                
-                <div class="flex justify-center space-x-6 mb-8">
-                    <a href="#" class="text-gray-400 hover:text-white transition-colors text-xl minecraft-hover">
-                        <i class="fa fa-github" aria-hidden="true"></i>
-                    </a>
-                    <a href="#" class="text-gray-400 hover:text-white transition-colors text-xl minecraft-hover">
-                        <i class="fa fa-youtube-play" aria-hidden="true"></i>
-                    </a>
-                    <a href="#" class="text-gray-400 hover:text-white transition-colors text-xl minecraft-hover">
-                        <i class="fa fa-twitter" aria-hidden="true"></i>
-                    </a>
-                    <a href="#" class="text-gray-400 hover:text-white transition-colors text-xl minecraft-hover">
-                        <i class="fa fa-envelope" aria-hidden="true"></i>
-                    </a>
-                </div>
-                
-                <div class="text-gray-500 text-sm">
-                    <p>© 2025 LunaCat的小站 | 基于 <a href="https://github.com/Meekdai/GMEEK" class="text-primary hover:underline">GMEEK</a> 框架构建</p>
-                    <p class="mt-1">托管于 <a href="https://pages.github.com/" class="text-primary hover:underline">GitHub Pages</a></p>
-                </div>
-            </div>
-        </div>
-    </footer>
-
-    <!-- 返回顶部按钮 -->
-    <button id="back-to-top" class="fixed bottom-8 right-8 bg-primary text-white w-12 h-12 rounded-full shadow-lg flex items-center justify-center opacity-0 invisible transition-all duration-300 hover:bg-primary/90 z-50">
-        <i class="fa fa-arrow-up" aria-hidden="true"></i>
-    </button>
-
-    <!-- JavaScript -->
-    <script>
-        // 主题切换功能
-        function setTheme(theme) {
-            if (theme === 'dark') {
-                document.body.classList.add('dark');
-                document.body.classList.remove('light');
-            } else {
-                document.body.classList.remove('dark');
-                document.body.classList.add('light');
-            }
-        }
+<body>
+    <div id="header">
+<h1>
+    <img src="file:///C:/Users/e180/Downloads/mcpfp%20-%20LunaCatX.png" class="avatar circle" id="avatarImg" alt="avatar"><a class="blogTitle">LunaCat的小站</a></h1>
+<div class="title-right">
+    <a href="https://11451579799.github.io/tag.html" id="buttonSearch" class="btn btn-invisible circle" title="搜索">
+        <svg class="octicon" width="16" height="16" >
+            <path id="pathSearch" fill-rule="evenodd"></path>
+        </svg>
+    </a>
+    
+    
+    <a href="https://11451579799.github.io/rss.xml" target="_blank" id="buttonRSS" class="btn btn-invisible circle" title="RSS">
+        <svg class="octicon" width="16" height="16" >
+            <path id="pathRSS" fill-rule="evenodd"></path>
+        </svg>
+    </a>
+    <a class="btn btn-invisible circle" onclick="modeSwitch()" title="切换主题">
+        <svg class="octicon" width="16" height="16" >
+            <path id="themeSwitch" fill-rule="evenodd"></path>
+        </svg>
+    </a>
+</div>
+</div>
+    <div id="content">
+<div style="margin-bottom: 16px;">欢迎来到我的小站</div>
+<nav class="SideNav border">
+<a class="SideNav-item d-flex flex-items-center flex-justify-between" href="post/ce-shi.html">
+    <div class="d-flex flex-items-center">
+        <svg class="SideNav-icon octicon" style="witdh:16px;height:16px"><path class="svgTop0" d=""></path>
+        </svg>
+        <span class="listTitle">测试</span>
+    </div>
+    <div class="listLabels">
         
-        document.getElementById('theme-toggle').addEventListener('click', function() {
-            if (document.body.classList.contains('dark')) {
-                setTheme('light');
-            } else {
-                setTheme('dark');
-            }
-        });
-        
-        document.getElementById('mobile-theme-toggle').addEventListener('click', function() {
-            if (document.body.classList.contains('dark')) {
-                setTheme('light');
-            } else {
-                setTheme('dark');
-            }
-        });
-        
-        // 移动端菜单切换
-        document.getElementById('mobile-menu-btn').addEventListener('click', function() {
-            const mobileMenu = document.getElementById('mobile-menu');
-            mobileMenu.classList.toggle('hidden');
-        });
-        
-        // 渲染文章列表
-        function renderPostList() {
-            const postListContainer = document.getElementById('post-list');
-            const posts = config.postListJson;
-            
-            // 如果没有文章
-            if (Object.keys(posts).length === 0) {
-                document.getElementById('no-more-posts').classList.remove('hidden');
-                return;
-            }
-            
-            // 遍历文章数据并生成HTML
-            Object.values(posts).forEach(post => {
-                const postCard = document.createElement('div');
-                postCard.className = 'bg-white dark:bg-gray-900 rounded-xl shadow-md overflow-hidden blog-card border border-gray-200 dark:border-gray-700 fade-in';
-                
-                // 生成标签HTML
-                const labelsHtml = post.labels.map(label => {
-                    const color = config.labelColorDict[label.toLowerCase().replace(' ', '-')] || '#000';
-                    return `<span class="inline-block px-2 py-1 text-xs rounded-full mr-2" style="background-color: ${color}; color: ${isLightColor(color) ? '#000' : '#fff'}">${label}</span>`;
-                }).join('');
-                
-                postCard.innerHTML = `
-                    <div class="p-6">
-                        <div class="flex flex-wrap mb-3">
-                            ${labelsHtml}
-                        </div>
-                        
-                        <h3 class="text-xl font-semibold mb-3 font-minecraft">
-                            <a href="${post.postUrl}" class="hover:text-primary transition-colors">${post.postTitle}</a>
-                        </h3>
-                        
-                        <p class="text-gray-600 dark:text-gray-300 mb-4 line-clamp-3">
-                            ${post.description}
-                        </p>
-                        
-                        <div class="flex justify-between items-center text-sm text-gray-500 dark:text-gray-400">
-                            <span>${post.createdDate}</span>
-                            <span>${post.wordCount} 字</span>
-                        </div>
-                        
-                        ${config.showPostSource ? `
-                            <div class="mt-4 pt-4 border-t border-gray-100 dark:border-gray-800">
-                                <a href="${post.postSourceUrl}" target="_blank" class="text-sm text-primary hover:underline flex items-center">
-                                    <i class="fa fa-github mr-1" aria-hidden="true"></i> 查看原文
-                                </a>
-                            </div>
-                        ` : ''}
-                    </div>
-                `;
-                
-                postListContainer.appendChild(postCard);
-            });
-        }
-        
-        // 判断颜色是否为浅色（用于文本颜色自动适配）
-        function isLightColor(hexColor) {
-            // 去掉#号
-            hexColor = hexColor.replace('#', '');
-            
-            // 解析RGB值
-            const r = parseInt(hexColor.substring(0, 2), 16);
-            const g = parseInt(hexColor.substring(2, 4), 16);
-            const b = parseInt(hexColor.substring(4, 6), 16);
-            
-            // 计算亮度
-            const luminance = (0.299 * r + 0.587 * g + 0.114 * b) / 255;
-            
-            // 亮度大于0.5认为是浅色
-            return luminance > 0.5;
-        }
-        
-        // 初始化滚动动画
-        function initScrollAnimations() {
-            const fadeElements = document.querySelectorAll('.fade-in');
-            const backToTopBtn = document.getElementById('back-to-top');
-            
-            // 观察元素是否进入视口
-            const observer = new IntersectionObserver((entries) => {
-                entries.forEach(entry => {
-                    if (entry.isIntersecting) {
-                        entry.target.classList.add('visible');
-                    }
-                });
-            }, { threshold: 0.1 });
-            
-            fadeElements.forEach(element => {
-                observer.observe(element);
-            });
-            
-            // 滚动时显示/隐藏返回顶部按钮
-            window.addEventListener('scroll', function() {
-                if (window.scrollY > 300) {
-                    backToTopBtn.classList.remove('opacity-0', 'invisible');
-                    backToTopBtn.classList.add('opacity-100', 'visible');
-                } else {
-                    backToTopBtn.classList.add('opacity-0', 'invisible');
-                    backToTopBtn.classList.remove('opacity-100', 'visible');
-                }
-            });
-            
-            // 返回顶部功能
-            backToTopBtn.addEventListener('click', function() {
-                window.scrollTo({
-                    top: 0,
-                    behavior: 'smooth'
-                });
-            });
-        }
-        
-        // 留言功能
-        document.addEventListener('DOMContentLoaded', function() {
-            const commentForm = document.getElementById('comment-form');
-            const commentsContainer = document.getElementById('comments-container');
-            const commentCount = document.getElementById('comment-count');
-            
-            // 加载本地存储的留言
-            function loadComments() {
-                const comments = JSON.parse(localStorage.getItem('lunacat_comments') || '[]');
-                renderComments(comments);
-            }
-            
-            // 渲染留言
-            function renderComments(comments) {
-                if (comments.length === 0) {
-                    commentsContainer.innerHTML = `
-                        <div class="text-center text-gray-500 dark:text-gray-400 py-10">
-                            <i class="fa fa-comment-o text-4xl mb-3 opacity-30" aria-hidden="true"></i>
-                            <p>还没有留言，快来抢沙发吧！</p>
-                        </div>
-                    `;
-                    commentCount.textContent = '0';
-                    return;
-                }
-                
-                commentCount.textContent = comments.length;
-                commentsContainer.innerHTML = '';
-                
-                // 最新的留言显示在前面
-                comments.reverse().forEach(comment => {
-                    const commentEl = document.createElement('div');
-                    commentEl.className = 'bg-gray-50 dark:bg-gray-800 p-4 rounded-lg shadow-sm';
-                    
-                    commentEl.innerHTML = `
-                        <div class="flex items-start">
-                            <div class="w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center mr-3 flex-shrink-0">
-                                <span class="text-primary font-medium">${comment.name.charAt(0).toUpperCase()}</span>
-                            </div>
-                            <div class="flex-1">
-                                <div class="flex justify-between items-center mb-1">
-                                    <h4 class="font-medium">${comment.name}</h4>
-                                    <span class="text-xs text-gray-500 dark:text-gray-400">${formatDate(comment.date)}</span>
-                                </div>
-                                <p class="text-gray-600 dark:text-gray-300 text-sm">${comment.content}</p>
-                            </div>
-                        </div>
-                    `;
-                    
-                    commentsContainer.appendChild(commentEl);
-                });
-            }
-            
-            // 格式化日期
-            function formatDate(timestamp) {
-                const date = new Date(timestamp);
-                return `${date.getFullYear()}-${(date.getMonth() + 1).toString().padStart(2, '0')}-${date.getDate().toString().padStart(2, '0')} ${date.getHours().toString().padStart(2, '0')}:${date.getMinutes().toString().padStart(2, '0')}`;
-            }
-            
-            // 提交留言
-            commentForm.addEventListener('submit', function(e) {
-                e.preventDefault();
-                
-                const name = document.getElementById('comment-name').value;
-                const content = document.getElementById('comment-content').value;
-                
-                const newComment = {
-                    name,
-                    content,
-                    date: new Date().getTime()
-                };
-                
-                // 保存到本地存储
-                const comments = JSON.parse(localStorage.getItem('lunacat_comments') || '[]');
-                comments.push(newComment);
-                localStorage.setItem('lunacat_comments', JSON.stringify(comments));
-                
-                // 重新渲染留言
-                renderComments(comments);
-                
-                // 重置表单
-                commentForm.reset();
-                
-                // 显示成功提示
-                const submitBtn = commentForm.querySelector('button[type="submit"]');
-                const originalText = submitBtn.textContent;
-                submitBtn.disabled = true;
-                submitBtn.textContent = '发送成功！';
-                
-                setTimeout(() => {
-                    submitBtn.disabled = false;
-                    submitBtn.textContent = originalText;
-                }, 2000);
-            });
-            
-            // 初始化加载留言
-            loadComments();
-            
-            // 设置导航和页脚的头像
-            const navAvatar = document.getElementById('nav-avatar');
-            const footerAvatar = document.getElementById('footer-avatar');
-            navAvatar.src = config.avatarUrl;
-            footerAvatar.src = config.avatarUrl;
-            navAvatar.alt = config.title;
-            footerAvatar.alt = config.title;
-            
-            // 设置GMEEK版本
-            document.getElementById('gmeek-version').textContent = config.GMEEK_VERSION;
-        });
-    </script>
+        <span class="Label LabelName" style="background-color:#0075ca"><object><a style="color:#fff" href="tag.html#documentation">documentation</a></object></span>
+        <span class="Label LabelTime" style="background-color:#0969da">2025-08-10</span>
+    </div>
+</a>
+</nav>
+</div>
+    <div id="footer"><div id="footer1">Copyright © <span id="copyrightYear"></span> <a href="https://11451579799.github.io">LunaCat的小站</a></div>
+<div id="footer2">
+    <span id="runday"></span><span>Powered by <a href="https://meekdai.com/Gmeek.html" target="_blank">Gmeek</a></span>
+</div>
+
+<script>
+var now=new Date();
+document.getElementById("copyrightYear").innerHTML=now.getFullYear();
+
+if(""!=""){
+    var startSite=new Date("");
+    var diff=now.getTime()-startSite.getTime();
+    var diffDay=Math.floor(diff/(1000*60*60*24));
+    document.getElementById("runday").innerHTML="网站运行"+diffDay+"天"+" • ";
+}
+</script></div>
+</body>
+<script>
+var IconList={'sun': 'M8 10.5a2.5 2.5 0 100-5 2.5 2.5 0 000 5zM8 12a4 4 0 100-8 4 4 0 000 8zM8 0a.75.75 0 01.75.75v1.5a.75.75 0 01-1.5 0V.75A.75.75 0 018 0zm0 13a.75.75 0 01.75.75v1.5a.75.75 0 01-1.5 0v-1.5A.75.75 0 018 13zM2.343 2.343a.75.75 0 011.061 0l1.06 1.061a.75.75 0 01-1.06 1.06l-1.06-1.06a.75.75 0 010-1.06zm9.193 9.193a.75.75 0 011.06 0l1.061 1.06a.75.75 0 01-1.06 1.061l-1.061-1.06a.75.75 0 010-1.061zM16 8a.75.75 0 01-.75.75h-1.5a.75.75 0 010-1.5h1.5A.75.75 0 0116 8zM3 8a.75.75 0 01-.75.75H.75a.75.75 0 010-1.5h1.5A.75.75 0 013 8zm10.657-5.657a.75.75 0 010 1.061l-1.061 1.06a.75.75 0 11-1.06-1.06l1.06-1.06a.75.75 0 011.06 0zm-9.193 9.193a.75.75 0 010 1.06l-1.06 1.061a.75.75 0 11-1.061-1.06l1.06-1.061a.75.75 0 011.061 0z', 'moon': 'M9.598 1.591a.75.75 0 01.785-.175 7 7 0 11-8.967 8.967.75.75 0 01.961-.96 5.5 5.5 0 007.046-7.046.75.75 0 01.175-.786zm1.616 1.945a7 7 0 01-7.678 7.678 5.5 5.5 0 107.678-7.678z', 'sync': 'M1.705 8.005a.75.75 0 0 1 .834.656 5.5 5.5 0 0 0 9.592 2.97l-1.204-1.204a.25.25 0 0 1 .177-.427h3.646a.25.25 0 0 1 .25.25v3.646a.25.25 0 0 1-.427.177l-1.38-1.38A7.002 7.002 0 0 1 1.05 8.84a.75.75 0 0 1 .656-.834ZM8 2.5a5.487 5.487 0 0 0-4.131 1.869l1.204 1.204A.25.25 0 0 1 4.896 6H1.25A.25.25 0 0 1 1 5.75V2.104a.25.25 0 0 1 .427-.177l1.38 1.38A7.002 7.002 0 0 1 14.95 7.16a.75.75 0 0 1-1.49.178A5.5 5.5 0 0 0 8 2.5Z', 'search': 'M15.7 13.3l-3.81-3.83A5.93 5.93 0 0 0 13 6c0-3.31-2.69-6-6-6S1 2.69 1 6s2.69 6 6 6c1.3 0 2.48-.41 3.47-1.11l3.83 3.81c.19.2.45.3.7.3.25 0 .52-.09.7-.3a.996.996 0 0 0 0-1.41v.01zM7 10.7c-2.59 0-4.7-2.11-4.7-4.7 0-2.59 2.11-4.7 4.7-4.7 2.59 0 4.7 2.11 4.7 4.7 0 2.59-2.11 4.7-4.7 4.7z', 'rss': 'M2.002 2.725a.75.75 0 0 1 .797-.699C8.79 2.42 13.58 7.21 13.974 13.201a.75.75 0 0 1-1.497.098 10.502 10.502 0 0 0-9.776-9.776.747.747 0 0 1-.7-.798ZM2.84 7.05h-.002a7.002 7.002 0 0 1 6.113 6.111.75.75 0 0 1-1.49.178 5.503 5.503 0 0 0-4.8-4.8.75.75 0 0 1 .179-1.489ZM2 13a1 1 0 1 1 2 0 1 1 0 0 1-2 0Z', 'upload': 'M2.75 14A1.75 1.75 0 0 1 1 12.25v-2.5a.75.75 0 0 1 1.5 0v2.5c0 .138.112.25.25.25h10.5a.25.25 0 0 0 .25-.25v-2.5a.75.75 0 0 1 1.5 0v2.5A1.75 1.75 0 0 1 13.25 14Z M11.78 4.72a.749.749 0 1 1-1.06 1.06L8.75 3.811V9.5a.75.75 0 0 1-1.5 0V3.811L5.28 5.78a.749.749 0 1 1-1.06-1.06l3.25-3.25a.749.749 0 0 1 1.06 0l3.25 3.25Z', 'post': 'M0 3.75C0 2.784.784 2 1.75 2h12.5c.966 0 1.75.784 1.75 1.75v8.5A1.75 1.75 0 0 1 14.25 14H1.75A1.75 1.75 0 0 1 0 12.25Zm1.75-.25a.25.25 0 0 0-.25.25v8.5c0 .138.112.25.25.25h12.5a.25.25 0 0 0 .25-.25v-8.5a.25.25 0 0 0-.25-.25ZM3.5 6.25a.75.75 0 0 1 .75-.75h7a.75.75 0 0 1 0 1.5h-7a.75.75 0 0 1-.75-.75Zm.75 2.25h4a.75.75 0 0 1 0 1.5h-4a.75.75 0 0 1 0-1.5Z'};
+var utterancesLoad=0;
+
+let themeSettings={
+    "dark": ["dark","moon","#00f0ff","dark-blue"],
+    "light": ["light","sun","#ff5000","github-light"],
+    "auto": ["auto","sync","","preferred-color-scheme"]
+};
+function changeTheme(mode, icon, color, utheme){
+    document.documentElement.setAttribute("data-color-mode",mode);
+    document.getElementById("themeSwitch").setAttribute("d",value=IconList[icon]);
+    document.getElementById("themeSwitch").parentNode.style.color=color;
+    if(utterancesLoad==1){utterancesTheme(utheme);}
+}
+function modeSwitch(){
+    let currentMode=document.documentElement.getAttribute('data-color-mode');
+    let newMode = currentMode === "light" ? "dark" : currentMode === "dark" ? "auto" : "light";
+    localStorage.setItem("meek_theme", newMode);
+    if(themeSettings[newMode]){
+        changeTheme(...themeSettings[newMode]);
+    }
+}
+function utterancesTheme(theme){
+    const message={type:'set-theme',theme: theme};
+    const iframe=document.getElementsByClassName('utterances-frame')[0];
+    iframe.contentWindow.postMessage(message,'https://utteranc.es');
+}
+if(themeSettings[theme]){changeTheme(...themeSettings[theme]);}
+console.log("\n %c Gmeek last https://github.com/Meekdai/Gmeek \n","padding:5px 0;background:#02d81d;color:#fff");
+</script>
+
+<script>
+document.getElementById("pathSearch").setAttribute("d",IconList["search"]);
+document.getElementById("pathRSS").setAttribute("d",IconList["rss"]);
+iconTOP=document.getElementsByClassName("svgTop1");
+iconPost=document.getElementsByClassName("svgTop0");
+for(var i=0;i<iconTOP.length;i++){
+    iconTOP[i].setAttribute("d",IconList["upload"]);
+    iconTOP[i].parentNode.style.color="red";
+}
+for(var i=0;i<iconPost.length;i++){
+    iconPost[i].setAttribute("d",IconList["post"]);
+}
 
 
-</body></html>
+
+
+</script>
+
+
+</html>
