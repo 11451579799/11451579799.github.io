@@ -1245,7 +1245,9 @@
 
             // 建议添加GitHub Personal Access Token以避免API速率限制
             // 令牌只需要repo权限
-            const githubToken = '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'; // 在此处添加你的令牌
+            // 注意：不要将令牌硬编码在前端代码中！
+            // 推荐做法：通过后端服务器代理请求或使用环境变量
+            const githubToken = ''; // 在此处添加你的令牌（仅开发测试使用）
 
             const headers = {
                 'Accept': 'application/vnd.github.v3+json',
