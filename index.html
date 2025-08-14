@@ -1,4 +1,6 @@
-<html lang="zh-CN"><head>
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title id="blog-title">LunaCat的小站</title>
@@ -11,532 +13,902 @@
     <!-- 引入外部资源 -->
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://cdn.jsdelivr.net/npm/font-awesome@4.7.0/css/font-awesome.min.css" rel="stylesheet">
-    <!-- GMEEK指定的Primer CSS -->
-    <link href="https://mirrors.sustech.edu.cn/cdnjs/ajax/libs/Primer/21.0.7/primer.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P:wght@400&display=swap" rel="stylesheet">
     
-    <!-- Tailwind配置 - 基于GMEEK颜色配置 -->
+    <!-- Tailwind配置 -->
     <script>
         tailwind.config = {
             theme: {
                 extend: {
                     colors: {
-                        primary: '#006b75', // 使用commentLabelColor作为主色
-                        year1: '#bc4c00',
-                        year2: '#0969da',
-                        year3: '#1f883d',
-                        year4: '#A333D0',
-                        // 标签颜色沿用GMEEK配置
-                        bug: '#d73a4a',
-                        documentation: '#0075ca',
-                        duplicate: '#cfd3d7',
-                        enhancement: '#a2eeef',
-                        'good-first-issue': '#7057ff',
-                        'help-wanted': '#008672',
-                        invalid: '#e4e669',
-                        question: '#d876e3',
-                        wontfix: '#ffffff',
+                        primary: '#55aa55',
+                        secondary: '#ff6b35',
+                        accent: '#4ecdc4',
+                        dark: {
+                            900: '#0a0f1c',
+                            800: '#141e30',
+                            700: '#2c3e50',
+                            600: '#34495e',
+                            500: '#7f8c8d'
+                        },
+                        'mc-green': '#00aa00',
+                        'mc-blue': '#5555ff',
+                        'mc-gold': '#ffaa00',
+                        'mc-red': '#ff5555',
+                        'mc-gray': '#aaaaaa',
                     },
                     fontFamily: {
-                        minecraft: ['"Press Start 2P"', 'monospace', 'sans-serif'],
+                        minecraft: ['"Press Start 2P"', 'monospace'],
                     },
+                    animation: {
+                        'float': 'float 6s ease-in-out infinite',
+                        'pulse-soft': 'pulse-soft 3s infinite',
+                        'slide-in-up': 'slide-in-up 0.5s ease-out',
+                        'pixel-pulse': 'pixel-pulse 4s infinite',
+                        'glow-pulse': 'glow-pulse 3s ease-in-out infinite',
+                        'pixel-float': 'pixel-float 8s ease-in-out infinite',
+                        'block-appear': 'block-appear 0.4s cubic-bezier(0.34, 1.56, 0.64, 1) forwards',
+                    },
+                    keyframes: {
+                        float: {
+                            '0%, 100%': { transform: 'translateY(0px)' },
+                            '50%': { transform: 'translateY(-15px)' }
+                        },
+                        'pulse-soft': {
+                            '0%, 100%': { boxShadow: '0 0 10px rgba(85, 170, 85, 0.3)' },
+                            '50%': { boxShadow: '0 0 20px rgba(85, 170, 85, 0.5)' }
+                        },
+                        'slide-in-up': {
+                            '0%': { opacity: '0', transform: 'translateY(30px)' },
+                            '100%': { opacity: '1', transform: 'translateY(0)' }
+                        },
+                        'pixel-pulse': {
+                            '0%, 100%': { 
+                                backgroundPosition: '0% 0%'
+                            },
+                            '50%': { 
+                                backgroundPosition: '100% 100%'
+                            }
+                        },
+                        'glow-pulse': {
+                            '0%, 100%': { 
+                                textShadow: '0 0 10px rgba(85, 170, 85, 0.7), 0 0 20px rgba(85, 170, 85, 0.4)' 
+                            },
+                            '50%': { 
+                                textShadow: '0 0 20px rgba(85, 170, 85, 0.9), 0 0 30px rgba(85, 170, 85, 0.6), 0 0 40px rgba(85, 170, 85, 0.3)' 
+                            }
+                        },
+                        'pixel-float': {
+                            '0%, 100%': { transform: 'translateY(0) rotate(0deg)' },
+                            '50%': { transform: 'translateY(-20px) rotate(2deg)' }
+                        },
+                        'block-appear': {
+                            '0%': { transform: 'scale(0.8)', opacity: 0 },
+                            '70%': { transform: 'scale(1.1)' },
+                            '100%': { transform: 'scale(1)', opacity: 1 }
+                        }
+                    }
                 }
             }
         }
     </script>
     
-    <style type="text/tailwindcss">
-        @layer utilities {
-            .content-auto {
-                content-visibility: auto;
-            }
-            .pixel-border {
-                box-shadow: 0 -4px 0 4px rgba(0,0,0,0.2), 
-                            4px 0 0 4px rgba(0,0,0,0.2), 
-                            0 4px 0 4px rgba(0,0,0,0.2), 
-                            -4px 0 0 4px rgba(0,0,0,0.2);
-            }
-            .minecraft-hover {
-                @apply transition-all duration-200 hover:scale-105 active:scale-95;
-            }
-            .text-shadow {
-                text-shadow: 2px 2px 0px rgba(0, 0, 0, 0.8);
-            }
-            .block-bg {
-                background-image: url("data:image/svg+xml,%3Csvg width='16' height='16' viewBox='0 0 16 16' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M0 0h16v2h-6v6h6v8H8v-6H2v6H0V0zm4 4h2v2H4V4zm8 8h2v2h-2v-2zm-8 0h2v2H4v-2zm8-8h2v2h-2V4z' fill='%239C92AC' fill-opacity='0.05' fill-rule='evenodd'/%3E%3C/svg%3E");
-            }
+    <style>
+        /* 优化全局过渡样式 - 避免应用到所有元素 */
+        .transition-all {
+            transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
         }
-        
-        /* 基础样式 */
+
+        /* 字体颜色过渡优化 - 更快的过渡速度 */
+        .text-content, .text-secondary {
+            transition: color 0.2s ease-in-out;
+        }
+
+        /* 区域过渡优化 */
+        section {
+            transition: background 0.8s cubic-bezier(0.4, 0, 0.2, 1),
+                        background-image 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+        }
+
+        section::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 40px;
+            background: linear-gradient(to bottom, transparent, inherit);
+            pointer-events: none;
+        }
+
+        /* 防止过度动画影响性能 */
+        .no-transition {
+            transition: none !important;
+        }
+
+        /* 优化滚动行为 */
         html {
             scroll-behavior: smooth;
+            scroll-padding-top: 80px;
         }
+        html { scroll-behavior: smooth; }
         
         body {
-            transition: background-color 0.3s ease, color 0.3s ease;
-        }
-        
-        /* 暗色模式样式 - 加深所有背景色并提高对比度 */
-        body.dark {
-            background-color: #0a0a0a; /* 更深的主背景 */
-            color: #ffffff; /* 主文本为纯白色 */
-        }
-        
-        body.dark .bg-white {
-            background-color: #121212; /* 深色卡片背景 */
-        }
-        
-        body.dark .bg-gray-50 {
-            background-color: #0f0f0f; /* 更深的浅灰色背景 */
-        }
-        
-        body.dark .text-gray-600 {
-            color: #e8e8e8; /* 更亮的次要文本 */
-        }
-        
-        body.dark .text-gray-700 {
-            color: #ffffff; /* 主要文本为纯白色 */
-        }
-        
-        body.dark .border-gray-300 {
-            border-color: #2a2a2a; /* 深色边框 */
-        }
-        
-        body.dark .bg-gray-100 {
-            background-color: #1a1a1a; /* 深色背景元素 */
-        }
-        
-        /* 暗色模式下的卡片和区块 */
-        body.dark .blog-card {
-            background-color: #121212;
-            border-color: #252525;
-        }
-        
-        body.dark .screenshot-item {
-            background-color: #121212;
-            border: 1px solid #252525;
-        }
-        
-        /* 暗色模式下的链接和强调文本 */
-        body.dark a {
-            color: #61dafb; /* 更亮的链接颜色 */
-        }
-        
-        body.dark a:hover {
-            color: #98e6fc; /* 悬停时更亮 */
-        }
-        
-        /* 像素风格滚动条 - 适应深色模式 */
-        ::-webkit-scrollbar {
-            width: 12px;
-            height: 12px;
-        }
-        ::-webkit-scrollbar-track {
-            background: #f1f1f1;
-            border: 2px solid #ddd;
-        }
-        ::-webkit-scrollbar-thumb {
-            background: #006b75;
-            border: 2px solid #005a64;
-        }
-        ::-webkit-scrollbar-thumb:hover {
-            background: #005a64;
-        }
-        
-        body.dark ::-webkit-scrollbar-track {
-            background: #121212;
-            border: 2px solid #252525;
-        }
-        
-        /* 像素按钮效果 */
-        .pixel-btn {
+            transition: background 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+            font-family: 'Press Start 2P', monospace;
+            line-height: 1.6;
             position: relative;
+        }
+        
+        /* MC风格像素背景特效 */
+        .pixel-bg {
+            position: fixed;
             top: 0;
             left: 0;
-            transition: all 0.1s ease;
-        }
-        .pixel-btn:hover {
-            top: -2px;
-            left: -2px;
-        }
-        .pixel-btn:active {
-            top: 2px;
-            left: 2px;
-        }
-        
-        /* 卡片悬停效果 */
-        .blog-card {
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-        }
-        .blog-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            background-image: 
+                linear-gradient(rgba(85, 170, 85, 0.03) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(85, 170, 85, 0.03) 1px, transparent 1px);
+            background-size: 32px 32px;
+            pointer-events: none;
         }
         
-        /* 滚动动画 */
+        .pixel-particles {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            pointer-events: none;
+        }
+        
+        .pixel-particle {
+            position: absolute;
+            width: 4px;
+            height: 4px;
+            background-color: rgba(85, 170, 85, 0.6);
+            opacity: 0;
+        }
+        
+        /* 亮色/暗色模式基础样式 */
+        body.light {
+            background: linear-gradient(135deg, #f0f9ff 0%, #e6fffa 50%, #fff9db 100%);
+            color: #333333;
+            transition: background 1.2s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        
+        body.dark {
+            background: linear-gradient(135deg, #0a0f1c 0%, #141e30 50%, #0a0f1c 100%);
+            color: #ffffff;
+            transition: background 1.2s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        
+        .text-content {
+            color: inherit !important;
+        }
+        
+        .text-secondary {
+            color: inherit;
+            opacity: 0.9;
+        }
+        
+        body.light .text-secondary {
+            color: #333333 !important;
+        }
+        
+        body.dark .text-secondary {
+            color: #ffffff !important;
+        }
+        
+        /* MC风格玻璃态卡片 */
+        .mc-card {
+            background: rgba(255, 255, 255, 0.07);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(85, 170, 85, 0.2);
+            box-shadow: 
+                0 8px 24px rgba(0, 0, 0, 0.12),
+                0 0 0 1px rgba(255, 255, 255, 0.05) inset;
+            transition: all 0.7s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .mc-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, 
+                rgba(85, 170, 85, 0) 0%, 
+                rgba(85, 170, 85, 0.1) 50%, 
+                rgba(85, 170, 85, 0) 100%);
+            transition: all 1s ease;
+            z-index: 1;
+        }
+        
+        .mc-card:hover::before {
+            left: 100%;
+            transition: all 0.8s ease;
+        }
+        
+        body.light .mc-card {
+            background: rgba(255, 255, 255, 0.8);
+            border: 1px solid rgba(85, 170, 85, 0.15);
+            box-shadow: 
+                0 8px 24px rgba(0, 0, 0, 0.08),
+                0 0 0 1px rgba(0, 0, 0, 0.03) inset;
+        }
+        
+        /* 按钮样式 */
+        .mc-button {
+            background: linear-gradient(135deg, #55aa55 0%, #449944 100%);
+            border: 3px solid #66bb66;
+            border-top-color: #77cc77;
+            border-left-color: #77cc77;
+            border-right-color: #338833;
+            border-bottom-color: #338833;
+            box-shadow: 
+                0 4px 0 #338833,
+                0 8px 16px rgba(0, 0, 0, 0.25);
+            transition: all 0.15s ease;
+            position: relative;
+            transform: translateZ(0);
+            cursor: pointer;
+        }
+        
+        .mc-button:hover {
+            transform: translateY(1px);
+            box-shadow: 
+                0 3px 0 #338833,
+                0 6px 14px rgba(0, 0, 0, 0.2);
+        }
+        
+        .mc-button:active {
+            transform: translateY(4px);
+            box-shadow: 
+                0 0 0 #338833,
+                0 2px 8px rgba(0, 0, 0, 0.2);
+        }
+        
+        /* 文字发光效果 */
+        .soft-glow {
+            text-shadow: 
+                0 0 8px rgba(85, 170, 85, 0.4),
+                0 0 12px rgba(85, 170, 85, 0.2);
+        }
+        
+        /* 悬停动画效果 */
+        .mc-hover {
+            transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
+        }
+        
+        .mc-hover:hover {
+            transform: translateY(-8px) scale(1.02);
+            box-shadow: 
+                0 20px 35px rgba(0, 0, 0, 0.25),
+                0 0 0 2px rgba(85, 170, 85, 0.4);
+        }
+        
+        /* 主题切换按钮 */
+        .theme-toggle {
+            width: 68px;
+            height: 34px;
+            background: linear-gradient(135deg, #141e30 0%, #2c3e50 100%);
+            border-radius: 17px;
+            position: relative;
+            cursor: pointer;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            box-shadow: 
+                inset 0 0 0 1px rgba(255,255,255,0.1),
+                0 4px 12px rgba(0,0,0,0.15);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 8px;
+        }
+        
+        .theme-toggle.light {
+            background: linear-gradient(135deg, #87CEEB 0%, #55aaff 100%);
+            box-shadow: 
+                inset 0 0 0 1px rgba(0,0,0,0.1),
+                0 4px 12px rgba(0,0,0,0.1);
+        }
+        
+        .theme-toggle::before {
+            content: '\f186'; /* 月亮图标 */
+            font-family: 'FontAwesome';
+            color: #ffcc00;
+            font-size: 16px;
+            z-index: 1;
+            transition: opacity 0.3s ease;
+        }
+        
+        .theme-toggle.light::before {
+            content: '\f185'; /* 太阳图标 */
+            color: #ff9900;
+        }
+        
+        .theme-toggle::after {
+            content: '';
+            position: absolute;
+            top: 3px;
+            left: 3px;
+            width: 28px;
+            height: 28px;
+            background: white;
+            border-radius: 50%;
+            transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            box-shadow: 
+                0 2px 6px rgba(0,0,0,0.2),
+                inset 0 0 0 2px rgba(0,0,0,0.1);
+            z-index: 2;
+        }
+        
+        .theme-toggle.light::after {
+            transform: translateX(34px);
+            background: #fff9c4;
+        }
+        
+        .theme-toggle:hover {
+            box-shadow: 
+                inset 0 0 0 1px rgba(255,255,255,0.15),
+                0 6px 16px rgba(0,0,0,0.2),
+                0 0 10px rgba(85, 170, 85, 0.3);
+        }
+        
+        .theme-toggle.light:hover {
+            box-shadow: 
+                inset 0 0 0 1px rgba(0,0,0,0.15),
+                0 6px 16px rgba(0,0,0,0.15),
+                0 0 10px rgba(85, 170, 255, 0.3);
+        }
+        
+        /* 模态框样式 */
+        .modal {
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            opacity: 0;
+            transform: translateY(20px);
+            transition: opacity 0.3s ease, transform 0.3s ease;
+            z-index: 9999 !important;
+        }
+        
+        .modal.active {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        
+        .modal-content {
+            animation: slide-in-up 0.5s ease-out;
+            max-height: 90vh;
+            overflow-y: auto;
+            position: relative;
+            z-index: 10000 !important;
+        }
+
+        /* 文章详情模态框特定样式 */
+        #article-modal {
+            z-index: 50;
+        }
+
+        #article-modal .modal-content {
+            max-width: min(90vw, 1200px);
+            width: 100%;
+            max-height: 90vh;
+            overflow-y: auto;
+            padding: clamp(1rem, 3vw, 2rem);
+        }
+
+        #article-content {
+            max-width: 100%;
+            margin: 0 auto;
+            line-height: 1.8;
+        }
+
+        @media (min-width: 1200px) {
+            #article-content {
+                padding: 0 clamp(1rem, 5vw, 3rem);
+            }
+        }
+
+        #article-content {
+            line-height: 1.6;
+        }
+
+        #article-content h2 {
+            margin-top: 1.5rem;
+            margin-bottom: 1rem;
+            font-size: 1.5rem;
+            font-weight: 600;
+        }
+
+        #article-content pre {
+            background-color: #f3f4f6;
+            padding: 1rem;
+            border-radius: 0.375rem;
+            overflow-x: auto;
+            margin: 1rem 0;
+        }
+
+        #article-content code {
+            font-family: 'Courier New', Courier, monospace;
+            font-size: 0.9em;
+        }
+
+        #article-labels {
+            display: flex;
+            flex-wrap: wrap;
+        }
+
+        /* 通用淡入动画类 */
         .fade-in {
             opacity: 0;
             transform: translateY(20px);
-            transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+            transition: opacity 0.8s ease, transform 0.8s ease;
         }
+
         .fade-in.visible {
             opacity: 1;
             transform: translateY(0);
         }
         
-        /* 图片悬停效果 */
-        .screenshot-item {
+        /* 个人介绍区域样式 */
+        .about-container {
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .about-glow {
+            position: absolute;
+            width: 400px;
+            height: 400px;
+            border-radius: 50%;
+            background: radial-gradient(circle, rgba(85, 170, 85, 0.2) 0%, rgba(85, 170, 85, 0) 70%);
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            z-index: 0;
+            animation: pulse-soft 6s infinite;
+        }
+        
+        .avatar-frame {
+            position: relative;
+            border-radius: 50%;
+            overflow: hidden;
+            box-shadow: 0 0 0 4px rgba(85, 170, 85, 0.2);
+            transition: all 0.5s ease;
+        }
+        
+        .avatar-frame::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background-image: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%2355aa55' fill-opacity='0.1'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+            opacity: 0.5;
+        }
+        
+        .avatar-frame:hover {
+            box-shadow: 0 0 0 6px rgba(85, 170, 85, 0.4),
+                       0 0 30px rgba(85, 170, 85, 0.3);
+            transform: translateY(-10px) scale(1.05);
+        }
+        
+        /* 技能标签样式 */
+        .skill-tag {
+            display: inline-block;
+            padding: 6px 12px;
+            margin: 0 8px 10px 0;
+            border-radius: 4px;
+            font-size: 12px;
+            background: rgba(85, 170, 85, 0.1);
+            border: 2px solid;
+            border-top-color: rgba(85, 170, 85, 0.6);
+            border-left-color: rgba(85, 170, 85, 0.6);
+            border-right-color: rgba(85, 170, 85, 0.3);
+            border-bottom-color: rgba(85, 170, 85, 0.3);
+            transition: all 0.3s ease;
+            position: relative;
+            opacity: 0;
+            transform: translateY(10px);
+        }
+        
+        .skill-tag::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: url("data:image/svg+xml,%3Csvg width='20' height='20' viewBox='0 0 20 20' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='%2355aa55' fill-opacity='0.1' fill-rule='evenodd'%3E%3Ccircle cx='3' cy='3' r='3'/%3E%3Ccircle cx='13' cy='13' r='3'/%3E%3C/g%3E%3C/svg%3E");
+            opacity: 0.5;
+        }
+        
+        .skill-tag:hover {
+            background: rgba(85, 170, 85, 0.2);
+            transform: translateY(-3px) scale(1.05);
+            box-shadow: 0 5px 15px rgba(85, 170, 85, 0.2);
+        }
+        
+        /* 淡入动画 */
+        .fade-in {
+            opacity: 0;
+            transform: translateY(20px);
+            transition: opacity 0.8s ease, transform 0.8s ease;
+        }
+
+        .fade-in.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* 文章卡片样式 */
+        .blog-card {
+            border-radius: 8px;
             overflow: hidden;
             transition: all 0.3s ease;
+            position: relative;
+            cursor: pointer;
         }
-        .screenshot-item img {
-            transition: transform 0.5s ease;
+        
+        .blog-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 4px;
+            background: linear-gradient(90deg, #55aa55, #4ecdc4);
+            transform: scaleX(0);
+            transition: transform 0.3s ease;
+            transform-origin: left;
         }
-        .screenshot-item:hover img {
-            transform: scale(1.1);
+        
+        .blog-card:hover::before {
+            transform: scaleX(1);
+        }
+        
+        .blog-card:hover .read-more {
+            transform: translateX(5px);
+        }
+        
+        .read-more {
+            display: inline-flex;
+            align-items: center;
+            transition: transform 0.3s ease;
+        }
+        
+        .read-more i {
+            margin-left: 5px;
+            transition: margin-left 0.3s ease;
+        }
+        
+        .blog-card:hover .read-more i {
+            margin-left: 8px;
+        }
+        
+        /* 其他通用样式 */
+        .member-card {
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            border: 1px solid rgba(85, 170, 85, 0.2);
+        }
+        
+        body.dark .member-card {
+            background: rgba(36, 52, 71, 0.5);
+        }
+        
+        .member-card:hover {
+            transform: translateY(-5px);
+            border-color: rgba(85, 170, 85, 0.5);
+            box-shadow: 0 12px 30px rgba(0, 0, 0, 0.3);
+        }
+        
+        ::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
+        }
+        
+        ::-webkit-scrollbar-track {
+            background: rgba(0, 0, 0, 0.05);
+            border-radius: 4px;
+        }
+        
+        body.dark ::-webkit-scrollbar-track {
+            background: rgba(255, 255, 255, 0.04);
+        }
+        
+        ::-webkit-scrollbar-thumb {
+            background: linear-gradient(135deg, #55aa55, #449944);
+            border-radius: 4px;
+            border: 2px solid transparent;
+            background-clip: content-box;
+        }
+        
+        @media (max-width: 768px) {
+            .font-minecraft {
+                font-size: 0.7em;
+                line-height: 1.5;
+            }
+        }
+        
+        .gallery-section {
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .gallery-bg {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 0;
+            filter: blur(12px) brightness(0.4);
+            transform: scale(1.05);
+            background-image: url('https://picsum.photos/1920/1080?random=100');
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+        }
+        
+        .gallery-content {
+            position: relative;
+            z-index: 10;
+        }
+        
+        .img-overlay {
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .img-overlay::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(135deg, rgba(85, 170, 85, 0.08) 0%, rgba(78, 205, 196, 0.08) 100%);
+            transition: opacity 0.5s ease;
+        }
+        
+        .img-overlay:hover::after {
+            opacity: 0;
+            transition: opacity 0.7s ease-out;
+        }
+
+        /* 图片加载淡入效果 */
+        img {            opacity: 0;            transform: scale(0.95);            transition: opacity 0.7s ease, transform 0.7s cubic-bezier(0.4, 0, 0.2, 1);        }
+
+        img.loaded {            opacity: 1;            transform: scale(1);            transition: opacity 0.7s ease, transform 0.7s cubic-bezier(0.4, 0, 0.2, 1);        }
+        
+        #scroll-progress {
+            position: fixed;
+            top: 0;
+            left: 0;
+            height: 3px;
+            background: linear-gradient(90deg, #55aa55, #4ecdc4);
+            z-index: 40;
+            transition: width 0.1s ease;
+            box-shadow: 0 2px 10px rgba(85, 170, 85, 0.4);
+            border-radius: 0 8px 8px 0;
+            transform: translateY(0.5px);
+        }
+        
+        header {
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            z-index: 50;
+            position: relative;
+            padding: 1rem 0;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0);
+        }
+
+        /* 滚动时导航栏效果 */
+        header.scrolled {
+            padding: 0.5rem 0;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+        }
+
+        body.dark header.scrolled {
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+        }
+        
+        body.dark header {
+            background: rgba(10, 15, 28, 0.85);
+            border-bottom: 1px solid rgba(85, 170, 85, 0.15);
+        }
+        
+        #upload {
+            transition: all 0.5s ease;
+        }
+        
+        body.dark #upload {
+            background: linear-gradient(180deg, rgba(10, 15, 28, 0) 0%, rgba(36, 52, 71, 0.3) 100%);
         }
     </style>
 </head>
 
-<body class="bg-gray-50 font-sans block-bg">
-    <!-- 配置数据 -->
-    <script>
-        const config = {
-            "singlePage": [],
-            "startSite": "",
-            "filingNum": "",
-            "onePageListNum": 15,
-            "commentLabelColor": "#006b75",
-            "yearColorList": ["#bc4c00", "#0969da", "#1f883d", "#A333D0"],
-            "i18n": "CN",
-            "themeMode": "manual",
-            "dayTheme": "light",
-            "nightTheme": "dark",
-            "urlMode": "pinyin",
-            "script": "",
-            "style": "",
-            "head": "",
-            "indexScript": "",
-            "indexStyle": "",
-            "bottomText": "",
-            "showPostSource": 1,
-            "iconList": {},
-            "UTC": 8,
-            "rssSplit": "sentence",
-            "exlink": {},
-            "needComment": 1,
-            "allHead": "",
-            "title": "LunaCat的小站",
-            "subTitle": "欢迎来到我的小站",
-            "avatarUrl": "file:///C:/Users/e180/Downloads/mcpfp%20-%20LunaCatX.png",
-            "GMEEK_VERSION": "last",
-            "postListJson": {
-                "P2": {
-                    "htmlDir": "docs/post/ce-shi.html",
-                    "labels": ["documentation"],
-                    "postTitle": "测试",
-                    "postUrl": "post/ce-shi.html",
-                    "postSourceUrl": "https://github.com/11451579799/11451579799.github.io/issues/2",
-                    "commentNum": 0,
-                    "wordCount": 11,
-                    "description": "Hello world。",
-                    "top": 0,
-                    "createdAt": 1754785594,
-                    "style": "",
-                    "script": "",
-                    "head": "",
-                    "ogImage": "file:///C:/Users/e180/Downloads/mcpfp%20-%20LunaCatX.png",
-                    "createdDate": "2025-08-10",
-                    "dateLabelColor": "#0969da"
-                }
-            },
-            "singeListJson": {},
-            "labelColorDict": {
-                "bug": "#d73a4a",
-                "documentation": "#0075ca",
-                "duplicate": "#cfd3d7",
-                "enhancement": "#a2eeef",
-                "good first issue": "#7057ff",
-                "help wanted": "#008672",
-                "invalid": "#e4e669",
-                "question": "#d876e3",
-                "wontfix": "#ffffff"
-            },
-            "displayTitle": "LunaCat的小站",
-            "faviconUrl": "file:///C:/Users/e180/Downloads/mcpfp%20-%20LunaCatX.png",
-            "ogImage": "file:///C:/Users/e180/Downloads/mcpfp%20-%20LunaCatX.png",
-            "primerCSS": "<link href='https://mirrors.sustech.edu.cn/cdnjs/ajax/libs/Primer/21.0.7/primer.css' rel='stylesheet' />",
-            "homeUrl": "https://11451579799.github.io",
-            "prevUrl": "disabled",
-            "nextUrl": "disabled"
-        };
-
-        // 初始化配置
-        document.addEventListener('DOMContentLoaded', function() {
-            // 应用标题和描述
-            document.getElementById('blog-title').textContent = config.title;
-            document.querySelector('meta[name="description"]').setAttribute('content', config.subTitle);
-            document.querySelector('meta[property="og:title"]').setAttribute('content', config.title);
-            document.querySelector('meta[property="og:description"]').setAttribute('content', config.subTitle);
-            
-            // 应用图片（注意：本地图片需替换为在线URL才能正常显示）
-            const avatarImg = document.getElementById('avatar-image');
-            avatarImg.src = config.avatarUrl;
-            avatarImg.alt = config.title;
-            
-            document.getElementById('favicon').setAttribute('href', config.faviconUrl);
-            document.getElementById('og-image').setAttribute('content', config.ogImage);
-            
-            // 初始化主题
-            if (config.themeMode === 'manual') {
-                // 默认使用日间主题
-                setTheme(config.dayTheme);
-            }
-            
-            // 加载文章列表
-            renderPostList();
-            
-            // 初始化滚动动画
-            initScrollAnimations();
-        });
-    </script>
+<body class="dark">
+    <!-- 像素背景特效 -->
+    <div class="pixel-bg"></div>
+    <div class="pixel-particles" id="pixel-particles"></div>
+    
+    <!-- 滚动进度条 -->
+    <div id="scroll-progress"></div>
 
     <!-- 导航栏 -->
-    <header class="fixed w-full bg-white/80 dark:bg-gray-900/90 backdrop-blur-md z-50 shadow-sm transition-all duration-300">
-        <div class="container mx-auto px-4 py-3">
+    <header class="fixed w-full shadow-lg">
+        <div class="container mx-auto px-4 py-4">
             <div class="flex justify-between items-center">
-                <!-- 网站标题 -->
-                <a href="#" class="flex items-center space-x-2 minecraft-hover">
-                    <img src="https://p3-flow-imagex-sign.byteimg.com/tos-cn-i-a9rns2rl98/rc/pc/code_assistant/34f9c2185bde491bb2a5036f69778a78~tplv-a9rns2rl98-image.image?rcl=2025081012344327BC15D7F98F82F230A6&amp;rk3s=8e244e95&amp;rrcfp=e75484ac&amp;x-expires=1755405283&amp;x-signature=OAi4EL1gkWVuc3Rx2Ug%2FPSa4O20%3D" id="nav-avatar" alt="Logo" class="w-8 h-8 rounded-full">
-                    <span class="font-minecraft text-lg text-primary font-bold">LunaCat的小站</span>
+                <a href="#home" class="flex items-center">
+                    <span class="font-minecraft text-lg text-primary soft-glow text-content">LunaCat的小站</span>
                 </a>
                 
-                <!-- 导航链接 -->
                 <nav class="hidden md:flex items-center space-x-6">
-                    <a href="#home" class="hover:text-primary transition-colors">首页</a>
-                    <a href="#posts" class="hover:text-primary transition-colors">文章</a>
-                    <a href="#screenshots" class="hover:text-primary transition-colors">游戏截图</a>
-                    <a href="#about" class="hover:text-primary transition-colors">关于我</a>
-                    <a href="#comments" class="hover:text-primary transition-colors">留言</a>
-                    
-                    <!-- 主题切换按钮 -->
-                    <button id="theme-toggle" class="p-2 rounded-full hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors">
-                        <i class="fa fa-sun-o text-yellow-500 dark:hidden" aria-hidden="true"></i>
-                        <i class="fa fa-moon-o text-gray-300 hidden dark:inline" aria-hidden="true"></i>
+                    <a href="#home" class="nav-link text-content hover:text-primary transition-colors duration-300 text-sm">首页</a>
+                    <a href="#posts" class="nav-link text-content hover:text-primary transition-colors duration-300 text-sm">文章</a>
+                    <a href="#gallery" class="nav-link text-content hover:text-primary transition-colors duration-300 text-sm">图片</a>
+                    <a href="#about" class="nav-link text-content hover:text-primary transition-colors duration-300 text-sm">关于我</a>
+                    <button id="qq-group-btn" class="mc-button text-white px-3 py-2 rounded-lg text-sm font-minecraft">
+                        <i class="fa fa-qq mr-1"></i>QQ群
                     </button>
+                    <!-- 主题切换按钮 -->
+                    <button id="theme-toggle" class="theme-toggle" title="切换主题"></button>
                 </nav>
                 
-                <!-- 移动端菜单按钮 -->
-                <div class="flex items-center md:hidden">
-                    <button id="mobile-theme-toggle" class="p-2 mr-2 rounded-full hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors">
-                        <i class="fa fa-sun-o text-yellow-500 dark:hidden" aria-hidden="true"></i>
-                        <i class="fa fa-moon-o text-gray-300 hidden dark:inline" aria-hidden="true"></i>
-                    </button>
-                    <button id="mobile-menu-btn" class="p-2 rounded-full hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors">
-                        <i class="fa fa-bars" aria-hidden="true"></i>
-                    </button>
-                </div>
-            </div>
-            
-            <!-- 移动端菜单 -->
-            <div id="mobile-menu" class="md:hidden hidden mt-3 pb-2">
-                <div class="flex flex-col space-y-3">
-                    <a href="#home" class="hover:text-primary transition-colors py-2">首页</a>
-                    <a href="#posts" class="hover:text-primary transition-colors py-2">文章</a>
-                    <a href="#screenshots" class="hover:text-primary transition-colors py-2">游戏截图</a>
-                    <a href="#about" class="hover:text-primary transition-colors py-2">关于我</a>
-                    <a href="#comments" class="hover:text-primary transition-colors py-2">留言</a>
-                </div>
+                <button id="mobile-menu-btn" class="md:hidden p-2 rounded-lg mc-card hover:bg-white/10 transition-colors">
+                    <i class="fa fa-bars text-content"></i>
+                </button>
             </div>
         </div>
     </header>
 
-    <!-- 英雄区域 -->
-    <section id="home" class="pt-28 pb-20 md:pt-40 md:pb-32 px-4 relative">
-        <div class="absolute inset-0 bg-gradient-to-br from-primary/5 to-primary/10 -z-10 dark:from-primary/10 dark:to-primary/5"></div>
-        <div class="container mx-auto max-w-5xl text-center">
-            <div class="inline-block mb-8">
-                <div class="w-32 h-32 md:w-40 md:h-40 rounded-full overflow-hidden border-4 border-white dark:border-gray-800 shadow-lg pixel-border mx-auto">
-                    <img id="avatar-image" src="https://p3-flow-imagex-sign.byteimg.com/tos-cn-i-a9rns2rl98/rc/pc/code_assistant/ea6c7c4dd7d143f18dfe71ccfdb00d82~tplv-a9rns2rl98-image.image?rcl=20250810123435CF297AF83C36C5B12C45&amp;rk3s=8e244e95&amp;rrcfp=e75484ac&amp;x-expires=1755405276&amp;x-signature=bUACUC7xTTUO3MFoTOrO7yUIl6Y%3D" alt="LunaCat的头像" class="w-full h-full object-cover">
+    <!-- 首页区域 -->
+    <section id="home" class="min-h-screen flex items-center justify-center py-20 px-4 relative z-10">
+        <div class="container mx-auto max-w-6xl text-center">
+            <div class="inline-block mb-8 relative">
+                <div class="avatar-frame">
+                    <img src="https://i.imgur.com/BpLCXpd.png" alt="LunaCat头像" class="w-32 h-32 md:w-48 md:h-48 rounded-full object-cover animate-float">
                 </div>
             </div>
-            
-            <h1 class="text-4xl md:text-5xl lg:text-6xl font-bold mb-6 font-minecraft text-shadow fade-in">
-                LunaCat的小站
-            </h1>
-            
-            <p class="text-xl md:text-2xl text-gray-600 dark:text-gray-300 mb-10 max-w-2xl mx-auto fade-in">
-                欢迎来到我的小站
-            </p>
-            
-            <div class="flex flex-wrap justify-center gap-4 fade-in">
-                <a href="#posts" class="bg-primary hover:bg-primary/90 text-white px-6 py-3 rounded-lg shadow-md pixel-btn transition-all">
-                    <i class="fa fa-file-text-o mr-2" aria-hidden="true"></i>我的文章
+            <h1 class="text-4xl md:text-6xl font-minecraft mb-6 soft-glow text-content animate-glow-pulse">LunaCat的小站</h1>
+            <p class="text-lg md:text-xl text-secondary mb-10 max-w-2xl mx-auto">我的世界创作与分享空间</p>
+            <div class="flex flex-col sm:flex-row justify-center gap-4">
+                <a href="#posts" class="mc-button text-white px-6 py-3 rounded-lg text-sm font-minecraft">
+                    <i class="fa fa-file-text-o mr-2"></i>浏览文章
                 </a>
-                <a href="#screenshots" class="bg-white dark:bg-gray-800 hover:bg-gray-100 dark:hover:bg-gray-700 text-gray-800 dark:text-white px-6 py-3 rounded-lg shadow-md pixel-btn transition-all border border-gray-200 dark:border-gray-700">
-                    <i class="fa fa-picture-o mr-2" aria-hidden="true"></i>游戏截图
+                <a href="#upload" class="mc-button bg-secondary hover:bg-secondary/90 text-white px-6 py-3 rounded-lg text-sm font-minecraft">
+                    <i class="fa fa-pencil mr-2"></i>投稿分享
                 </a>
-            </div>
-            
-            <!-- 版本信息 -->
-            <div class="mt-12 text-sm text-gray-500 dark:text-gray-400 fade-in">
-                <p>GMEEK 版本: <span id="gmeek-version">last</span> | 最后更新: 2025-08-10</p>
             </div>
         </div>
     </section>
 
-    <!-- 文章列表 -->
-    <section id="posts" class="py-16 px-4 bg-white dark:bg-gray-900">
-        <div class="container mx-auto max-w-6xl">
-            <div class="text-center mb-12 fade-in">
-                <h2 class="text-3xl md:text-4xl font-bold mb-4 font-minecraft">我的文章</h2>
-                <div class="w-20 h-1 bg-primary mx-auto rounded-full"></div>
+    <!-- 文章列表区域 -->
+    <section id="posts" class="py-16 px-4 relative z-10">
+        <div class="absolute inset-0 img-overlay">
+            <img src="https://private-user-images.githubusercontent.com/175589034/476424684-30839f26-b617-4ed9-91fd-4317e4a5b3c7.png?jwt=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJnaXRodWIuY29tIiwiYXVkIjoicmF3LmdpdGh1YnVzZXJjb250ZW50LmNvbSIsImtleSI6ImtleTUiLCJleHAiOjE3NTUxNjMxNjQsIm5iZiI6MTc1NTE2Mjg2NCwicGF0aCI6Ii8xNzU1ODkwMzQvNDc2NDI0Njg0LTMwODM5ZjI2LWI2MTctNGVkOS05MWZkLTQzMTdlNGE1YjNjNy5wbmc_WC1BbXotQWxnb3JpdGhtPUFXUzQtSE1BQy1TSEEyNTYmWC1BbXotQ3JlZGVudGlhbD1BS0lBVkNPRFlMU0E1M1BRSzRaQSUyRjIwMjUwODE0JTJGdXMtZWFzdC0xJTJGczMlMkZhd3M0X3JlcXVlc3QmWC1BbXotRGF0ZT0yMDI1MDgxNFQwOTE0MjRaJlgtQW16LUV4cGlyZXM9MzAwJlgtQW16LVNpZ25hdHVyZT0xOTQ4MmVhMTAxN2NkY2E2M2Q1MjkxZWQ0MzRmZTQzNTFhMDFiMzg3ZDNiMjVlOWM0NmIwODk5YmQ0NDA3ODJiJlgtQW16LVNpZ25lZEhlYWRlcnM9aG9zdCJ9.IYyomJezNgFoO2VYXHcSlueDFcEWhaShsu5V-djL8fs" alt="我的世界背景" class="w-full h-full object-cover opacity-5 brightness-50">
+        </div>
+        
+        <div class="container mx-auto max-w-6xl relative z-10">
+            <div class="text-center mb-12">
+                <h2 class="text-3xl md:text-4xl font-minecraft mb-4 soft-glow text-content animate-glow-pulse">我的世界文章</h2>
+                <div class="w-24 h-1 bg-primary mx-auto rounded-full animate-pulse-soft"></div>
+                <p class="mt-4 text-secondary text-sm md:text-base mb-6">分享数据包制作、MCR技术与整合包设计心得</p>
+                <div id="tag-filters" class="flex flex-wrap justify-center gap-2 mb-6">
+                    <button class="tag-filter-btn mc-button bg-primary text-white px-4 py-2 rounded-lg text-xs font-minecraft" onclick="fetchGitHubIssues(1, '')">全部文章</button>
+                    <button class="tag-filter-btn mc-button bg-primary/20 text-content px-4 py-2 rounded-lg text-xs font-minecraft" onclick="fetchGitHubIssues(1, '数据包开发')">数据包开发</button>
+                    <button class="tag-filter-btn mc-button bg-primary/20 text-content px-4 py-2 rounded-lg text-xs font-minecraft" onclick="fetchGitHubIssues(1, 'MCR技术')">MCR技术</button>
+                    <button class="tag-filter-btn mc-button bg-primary/20 text-content px-4 py-2 rounded-lg text-xs font-minecraft" onclick="fetchGitHubIssues(1, '整合包设计')">整合包设计</button>
+                </div>
             </div>
             
-            <div id="post-list" class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+            <div id="loading" class="text-center py-16">
+                <div class="mc-card rounded-2xl p-8 inline-block">
+                    <div class="animate-spin rounded-lg h-12 w-12 border-4 border-primary border-t-transparent mx-auto mb-4"></div>
+                    <p class="text-secondary text-sm">正在加载文章...</p>
+                </div>
+            </div>
+            
+            <div id="post-list" class="grid md:grid-cols-2 lg:grid-cols-3 gap-6 hidden">
                 <!-- 文章列表将通过JavaScript动态生成 -->
             </div>
             
-            <!-- 没有更多文章时显示 -->
-            <div id="no-more-posts" class="text-center py-16 hidden fade-in">
-                <i class="fa fa-file-text-o text-5xl text-gray-300 dark:text-gray-600 mb-4" aria-hidden="true"></i>
-                <p class="text-gray-500 dark:text-gray-400">目前没有更多文章</p>
+            <div id="no-posts" class="text-center py-16">
+                <div class="mc-card rounded-2xl p-8 inline-block">
+                    <i class="fa fa-book text-4xl opacity-30 mb-4 block"></i>
+                    <p class="text-secondary text-sm mb-2">暂时没有文章</p>
+                    <p class="opacity-30 text-xs">快来发布你的第一篇我的世界教程吧！</p>
+                </div>
             </div>
         </div>
     </section>
 
-    <!-- 游戏截图 -->
-    <section id="screenshots" class="py-16 px-4 bg-gray-50 dark:bg-gray-800">
-        <div class="container mx-auto max-w-6xl">
-            <div class="text-center mb-12 fade-in">
-                <h2 class="text-3xl md:text-4xl font-bold mb-4 font-minecraft">游戏截图</h2>
-                <div class="w-20 h-1 bg-primary mx-auto rounded-full"></div>
-                <p class="mt-4 text-gray-600 dark:text-gray-300 max-w-2xl mx-auto">分享我的Minecraft游戏瞬间</p>
+    <!-- 图片展示区域 -->
+    <section id="gallery" class="py-20 px-4 relative z-10 gallery-section">
+        <div class="gallery-bg"></div>
+        
+        <div class="container mx-auto max-w-6xl gallery-content">
+            <div class="text-center mb-16">
+                <h2 class="text-3xl md:text-4xl font-minecraft mb-4 soft-glow text-content animate-glow-pulse">作品展示</h2>
+                <div class="w-24 h-1 bg-primary mx-auto rounded-full animate-pulse-soft"></div>
+                <p class="mt-4 text-secondary text-sm md:text-base">我的世界创作与游戏截图</p>
             </div>
             
-            <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 fade-in">
-                <div class="screenshot-item rounded-lg overflow-hidden shadow-md">
-                    <img src="https://picsum.photos/id/131/400/300" alt="Minecraft风景" class="w-full h-48 object-cover">
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                <div class="rounded-xl overflow-hidden shadow-lg mc-hover fade-in">
+                    <img src="https://picsum.photos/600/400?random=1" alt="我的世界建筑" class="w-full h-64 object-cover transition-transform duration-500 hover:scale-110">
                 </div>
-                <div class="screenshot-item rounded-lg overflow-hidden shadow-md">
-                    <img src="https://picsum.photos/id/142/400/300" alt="建筑作品" class="w-full h-48 object-cover">
+                <div class="rounded-xl overflow-hidden shadow-lg mc-hover fade-in" style="transition-delay: 100ms">
+                    <img src="https://picsum.photos/600/400?random=2" alt="我的世界风景" class="w-full h-64 object-cover transition-transform duration-500 hover:scale-110">
                 </div>
-                <div class="screenshot-item rounded-lg overflow-hidden shadow-md">
-                    <img src="https://picsum.photos/id/152/400/300" alt="红石电路" class="w-full h-48 object-cover">
+                <div class="rounded-xl overflow-hidden shadow-lg mc-hover fade-in" style="transition-delay: 200ms">
+                    <img src="https://picsum.photos/600/400?random=3" alt="我的世界红石装置" class="w-full h-64 object-cover transition-transform duration-500 hover:scale-110">
                 </div>
-                <div class="screenshot-item rounded-lg overflow-hidden shadow-md">
-                    <img src="https://picsum.photos/id/163/400/300" alt="夜晚场景" class="w-full h-48 object-cover">
+                <div class="rounded-xl overflow-hidden shadow-lg mc-hover fade-in" style="transition-delay: 300ms">
+                    <img src="https://picsum.photos/600/400?random=4" alt="我的世界材质" class="w-full h-64 object-cover transition-transform duration-500 hover:scale-110">
                 </div>
-                <div class="screenshot-item rounded-lg overflow-hidden shadow-md">
-                    <img src="https://picsum.photos/id/174/400/300" alt="矿物采集" class="w-full h-48 object-cover">
+                <div class="rounded-xl overflow-hidden shadow-lg mc-hover fade-in" style="transition-delay: 400ms">
+                    <img src="https://picsum.photos/600/400?random=5" alt="我的世界模组" class="w-full h-64 object-cover transition-transform duration-500 hover:scale-110">
                 </div>
-                <div class="screenshot-item rounded-lg overflow-hidden shadow-md">
-                    <img src="https://picsum.photos/id/185/400/300" alt="农场" class="w-full h-48 object-cover">
+                <div class="rounded-xl overflow-hidden shadow-lg mc-hover fade-in" style="transition-delay: 500ms">
+                    <img src="https://picsum.photos/600/400?random=6" alt="我的世界数据包效果" class="w-full h-64 object-cover transition-transform duration-500 hover:scale-110">
                 </div>
-                <div class="screenshot-item rounded-lg overflow-hidden shadow-md">
-                    <img src="https://picsum.photos/id/196/400/300" alt="战斗场景" class="w-full h-48 object-cover">
-                </div>
-                <div class="screenshot-item rounded-lg overflow-hidden shadow-md">
-                    <img src="https://picsum.photos/id/207/400/300" alt="海底探索" class="w-full h-48 object-cover">
-                </div>
-            </div>
-            
-            <div class="text-center mt-10 fade-in">
-                <button class="bg-primary hover:bg-primary/90 text-white px-6 py-3 rounded-lg shadow-md pixel-btn transition-all">
-                    <i class="fa fa-plus mr-2" aria-hidden="true"></i>加载更多截图
-                </button>
             </div>
         </div>
     </section>
 
-    <!-- 关于我 -->
-    <section id="about" class="py-16 px-4 bg-white dark:bg-gray-900">
-        <div class="container mx-auto max-w-5xl">
-            <div class="text-center mb-12 fade-in">
-                <h2 class="text-3xl md:text-4xl font-bold mb-4 font-minecraft">关于我</h2>
-                <div class="w-20 h-1 bg-primary mx-auto rounded-full"></div>
+    <!-- 关于我区域 - MC风格优化 -->
+    <section id="about" class="py-20 px-4 relative z-10">
+        <div class="container mx-auto max-w-4xl">
+            <div class="text-center mb-16">
+                <h2 class="text-3xl md:text-4xl font-minecraft mb-4 soft-glow text-content animate-glow-pulse">关于我</h2>
+                <div class="w-24 h-1 bg-primary mx-auto rounded-full animate-pulse-soft"></div>
+                <p class="mt-4 text-secondary text-sm md:text-base">我的世界创作者与技术爱好者</p>
             </div>
             
-            <div class="grid md:grid-cols-2 gap-10 items-center">
-                <div class="fade-in">
-                    <div class="bg-gray-100 dark:bg-gray-800 p-6 rounded-xl shadow-sm">
-                        <h3 class="text-2xl font-semibold mb-4 font-minecraft">你好！我是LunaCat</h3>
-                        <p class="text-gray-600 dark:text-gray-300 mb-4 leading-relaxed">
-                            一名热爱Minecraft的中学生，喜欢在方块世界中建造、探索和创造。
-                        </p>
-                        <p class="text-gray-600 dark:text-gray-300 mb-4 leading-relaxed">
-                            从小学就开始接触Minecraft，最喜欢的玩法是创造模式和红石电路。这个小站用来记录我的游戏心得和作品。
-                        </p>
-                        <p class="text-gray-600 dark:text-gray-300 mb-6 leading-relaxed">
-                            欢迎大家交流Minecraft的玩法和技巧！
-                        </p>
-                        
-                        <div class="flex flex-wrap gap-3">
-                            <a href="#" class="flex items-center bg-gray-200 dark:bg-gray-700 hover:bg-gray-300 dark:hover:bg-gray-600 px-4 py-2 rounded-lg transition-colors">
-                                <i class="fa fa-github mr-2" aria-hidden="true"></i> GitHub
-                            </a>
-                            <a href="#" class="flex items-center bg-gray-200 dark:bg-gray-700 hover:bg-gray-300 dark:hover:bg-gray-600 px-4 py-2 rounded-lg transition-colors">
-                                <i class="fa fa-youtube-play mr-2" aria-hidden="true"></i> YouTube
-                            </a>
-                            <a href="#" class="flex items-center bg-gray-200 dark:bg-gray-700 hover:bg-gray-300 dark:hover:bg-gray-600 px-4 py-2 rounded-lg transition-colors">
-                                <i class="fa fa-envelope mr-2" aria-hidden="true"></i> 邮箱
-                            </a>
+            <div class="about-container">
+                <div class="about-glow"></div>
+                <div class="mc-card rounded-2xl p-8 md:p-10 fade-in shadow-xl">
+                    <div class="flex flex-col md:flex-row items-center gap-8">
+                        <div class="avatar-frame">
+                            <img src="https://i.imgur.com/BpLCXpd.png" alt="LunaCat头像" class="w-36 h-36 object-cover">
                         </div>
-                    </div>
-                </div>
-                
-                <div class="relative fade-in">
-                    <div class="absolute -top-4 -left-4 w-full h-full bg-primary/20 rounded-xl -z-10"></div>
-                    <img src="https://picsum.photos/id/1076/600/800" alt="玩Minecraft的照片" class="w-full h-auto rounded-xl shadow-md">
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- 留言区 -->
-    <section id="comments" class="py-16 px-4 bg-gray-50 dark:bg-gray-800">
-        <div class="container mx-auto max-w-5xl">
-            <div class="text-center mb-12 fade-in">
-                <h2 class="text-3xl md:text-4xl font-bold mb-4 font-minecraft">留言板</h2>
-                <div class="w-20 h-1 bg-primary mx-auto rounded-full"></div>
-                <p class="mt-4 text-gray-600 dark:text-gray-300 max-w-2xl mx-auto">有什么想对我说的？欢迎留言交流</p>
-            </div>
-            
-            <div class="grid md:grid-cols-5 gap-8">
-                <!-- 留言表单 -->
-                <div class="md:col-span-2 fade-in">
-                    <div class="bg-white dark:bg-gray-900 rounded-xl shadow-md p-6 border border-gray-200 dark:border-gray-700">
-                        <h3 class="text-xl font-semibold mb-6 font-minecraft">写下你的留言</h3>
-                        <form id="comment-form" class="space-y-4">
-                            <div>
-                                <label for="comment-name" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">你的名字</label>
-                                <input type="text" id="comment-name" required="" class="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-800 focus:ring-2 focus:ring-primary focus:border-primary transition-colors">
+                        <div class="text-left flex-1">
+                            <h3 class="text-2xl font-minecraft mb-4 text-content">LunaCat</h3>
+                            <p class="text-secondary mb-6 text-sm leading-relaxed">
+                                热爱我的世界的创作者，专注于数据包开发、MCR技术研究和整合包设计。
+                                致力于分享我的世界创作经验和技术教程，希望能帮助更多玩家享受创作的乐趣。
+                            </p>
+                            
+                            <div class="mb-6">
+                                <h4 class="font-medium mb-3 text-content">我的专长</h4>
+                                <div class="flex flex-wrap">
+                                    <!-- 技能标签将通过JavaScript动态生成 -->
+                                </div>
                             </div>
                             
-                            <div>
-                                <label for="comment-content" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">留言内容</label>
-                                <textarea id="comment-content" rows="4" required="" class="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-800 focus:ring-2 focus:ring-primary focus:border-primary transition-colors resize-none"></textarea>
-                            </div>
-                            
-                            <button type="submit" class="w-full bg-primary hover:bg-primary/90 text-white py-3 rounded-lg transition-colors font-medium pixel-btn">
-                                发送留言
-                            </button>
-                        </form>
-                    </div>
-                </div>
-                
-                <!-- 留言列表 -->
-                <div class="md:col-span-3 fade-in">
-                    <div class="bg-white dark:bg-gray-900 rounded-xl shadow-md p-6 border border-gray-200 dark:border-gray-700 h-full">
-                        <h3 class="text-xl font-semibold mb-6 font-minecraft">
-                            <i class="fa fa-comments text-primary mr-2" aria-hidden="true"></i>
-                            最近留言
-                            <span id="comment-count" class="ml-2 bg-primary/10 text-primary text-sm px-2 py-1 rounded-full">0</span>
-                        </h3>
-                        
-                        <div id="comments-container" class="space-y-4 max-h-[500px] overflow-y-auto pr-2">
-                            <div class="text-center text-gray-500 dark:text-gray-400 py-10">
-                                <i class="fa fa-comment-o text-4xl mb-3 opacity-30" aria-hidden="true"></i>
-                                <p>还没有留言，快来抢沙发吧！</p>
+                            <div class="flex space-x-4">
+                                <a href="#" class="w-10 h-10 rounded-lg bg-primary/20 flex items-center justify-center text-primary hover:bg-primary/30 transition-colors">
+                                    <i class="fa fa-github"></i>
+                                </a>
+                                <a href="#" class="w-10 h-10 rounded-lg bg-primary/20 flex items-center justify-center text-primary hover:bg-primary/30 transition-colors">
+                                    <i class="fa fa-youtube-play"></i>
+                                </a>
+                                <a href="#" class="w-10 h-10 rounded-lg bg-primary/20 flex items-center justify-center text-primary hover:bg-primary/30 transition-colors">
+                                    <i class="fa fa-qq"></i>
+                                </a>
+                                <a href="#" class="w-10 h-10 rounded-lg bg-primary/20 flex items-center justify-center text-primary hover:bg-primary/30 transition-colors">
+                                    <i class="fa fa-curseforge"></i>
+                                </a>
                             </div>
                         </div>
                     </div>
@@ -545,160 +917,524 @@
         </div>
     </section>
 
-    <!-- 页脚 -->
-    <footer class="bg-gray-900 text-white py-12 px-4">
-        <div class="container mx-auto max-w-5xl">
-            <div class="text-center">
-                <div class="flex items-center justify-center mb-6">
-                    <img src="https://p3-flow-imagex-sign.byteimg.com/tos-cn-i-a9rns2rl98/rc/pc/code_assistant/55900aefea1746a1987f0cf7dbd91b5e~tplv-a9rns2rl98-image.image?rcl=20250810124207097F5C26F73F5BCBAD04&amp;rk3s=8e244e95&amp;rrcfp=e75484ac&amp;x-expires=1755405727&amp;x-signature=F51lqYh6By8GYNyRXVp3hDEDGnY%3D" id="footer-avatar" alt="LunaCat" class="w-12 h-12 rounded-full mr-3">
-                    <h3 class="text-2xl font-bold font-minecraft">LunaCat的小站</h3>
-                </div>
-                
-                <p class="text-gray-400 max-w-md mx-auto mb-8">
-                    欢迎来到我的小站
-                </p>
-                
-                <div class="flex justify-center space-x-6 mb-8">
-                    <a href="#" class="text-gray-400 hover:text-white transition-colors text-xl minecraft-hover">
-                        <i class="fa fa-github" aria-hidden="true"></i>
-                    </a>
-                    <a href="#" class="text-gray-400 hover:text-white transition-colors text-xl minecraft-hover">
-                        <i class="fa fa-youtube-play" aria-hidden="true"></i>
-                    </a>
-                    <a href="#" class="text-gray-400 hover:text-white transition-colors text-xl minecraft-hover">
-                        <i class="fa fa-twitter" aria-hidden="true"></i>
-                    </a>
-                    <a href="#" class="text-gray-400 hover:text-white transition-colors text-xl minecraft-hover">
-                        <i class="fa fa-envelope" aria-hidden="true"></i>
-                    </a>
-                </div>
-                
-                <div class="text-gray-500 text-sm">
-                    <p>© 2025 LunaCat的小站 | 基于 <a href="https://github.com/Meekdai/GMEEK" class="text-primary hover:underline">GMEEK</a> 框架构建</p>
-                    <p class="mt-1">托管于 <a href="https://pages.github.com/" class="text-primary hover:underline">GitHub Pages</a></p>
+    <!-- 投稿区域 -->
+    <section id="upload" class="py-20 px-4 bg-gray-50 dark:bg-dark-800/30">
+        <div class="container mx-auto max-w-7xl">
+            <div class="text-center mb-16 fade-in">
+                <h2 class="text-4xl md:text-5xl font-bold mb-6 font-minecraft text-content">投稿分享</h2>
+                <div class="w-24 h-2 bg-primary mx-auto rounded-full shadow-lg"></div>
+                <p class="mt-6 text-secondary text-lg max-w-2xl mx-auto">分享你的我的世界创作与经验</p>
+            </div>
+            
+            <div class="max-w-2xl mx-auto rounded-2xl shadow-xl overflow-hidden fade-in mc-card">
+                <div class="p-8 upload-guide">
+                    <div class="text-center mb-6">
+                        <i class="fa fa-pencil-square-o text-5xl text-primary mb-4" aria-hidden="true"></i>
+                        <h3 class="text-2xl font-bold mb-2 text-content">如何投稿？</h3>
+                        <p class="text-secondary">在GitHub上提交issue即可发布文章</p>
+                    </div>
+                    
+                    <ol class="list-decimal pl-6 space-y-4 text-secondary">
+                        <li>访问本站的GitHub仓库: <a href="https://github.com/11451579799/11451579799.github.io" class="text-primary hover:underline" target="_blank">11451579799/11451579799.github.io</a></li>
+                        <li>点击右上角的 "Issues" 选项</li>
+                        <li>点击 "New issue" 创建新issue</li>
+                        <li>填写文章标题和内容，添加适当的标签</li>
+                        <li>提交后等待审核，审核通过后将自动发布</li>
+                    </ol>
+                    
+                    <div class="mt-8 text-center">
+                        <a href="https://github.com/11451579799/11451579799.github.io/issues/new" target="_blank" class="inline-flex items-center justify-center bg-primary hover:bg-primary/90 text-white px-8 py-4 rounded-xl shadow-lg transition-all font-medium mc-button">
+                            <i class="fa fa-external-link mr-2" aria-hidden="true"></i>
+                            前往GitHub提交
+                        </a>
+                    </div>
                 </div>
             </div>
         </div>
-    </footer>
-
-    <!-- 返回顶部按钮 -->
-    <button id="back-to-top" class="fixed bottom-8 right-8 bg-primary text-white w-12 h-12 rounded-full shadow-lg flex items-center justify-center opacity-0 invisible transition-all duration-300 hover:bg-primary/90 z-50">
+    </section>
+    
+    <!-- 回到顶部按钮 -->
+    <button id="back-to-top" class="fixed bottom-8 right-8 bg-primary text-white w-12 h-12 rounded-lg flex items-center justify-center shadow-lg opacity-0 invisible transition-all z-50">
         <i class="fa fa-arrow-up" aria-hidden="true"></i>
     </button>
 
-    <!-- JavaScript -->
+    <!-- 移动端菜单 -->
+    <div id="mobile-menu" class="fixed inset-0 bg-black opacity-50 z-50 hidden md:hidden">
+        <div class="h-full w-64 bg-white dark:bg-dark-800 p-6 transform transition-transform">
+            <div class="flex justify-between items-center mb-8">
+                <span class="font-minecraft text-lg text-primary">菜单</span>
+                <button id="close-mobile-menu" class="p-2">
+                    <i class="fa fa-times text-content"></i>
+                </button>
+            </div>
+            <nav class="flex flex-col space-y-4">
+                <a href="#home" class="nav-link py-2 text-content hover:text-primary transition-colors">首页</a>
+                <a href="#posts" class="nav-link py-2 text-content hover:text-primary transition-colors">文章</a>
+                <a href="#gallery" class="nav-link py-2 text-content hover:text-primary transition-colors">图片</a>
+                <a href="#about" class="nav-link py-2 text-content hover:text-primary transition-colors">关于我</a>
+                <button id="mobile-qq-group-btn" class="mc-button text-white px-4 py-2 rounded-lg text-sm font-minecraft w-full">
+                    <i class="fa fa-qq mr-1"></i>QQ群
+                </button>
+            </nav>
+        </div>
+    </div>
+
+    <!-- QQ群模态框 -->
+    <div id="qq-group-modal" class="modal fixed inset-0 flex items-center justify-center hidden">
+        <div class="absolute inset-0 bg-black opacity-50" id="modal-overlay"></div>
+        <div class="modal-content relative bg-white dark:bg-dark-800 rounded-2xl shadow-2xl max-w-md w-full mx-4 mc-card">
+            <div class="p-6">
+                <div class="flex justify-between items-center mb-6">
+                    <h3 class="text-xl font-minecraft text-content">加入QQ群</h3>
+                    <button id="close-modal" class="text-content hover:text-gray-700 dark:hover:text-gray-300">
+                        <i class="fa fa-times"></i>
+                    </button>
+                </div>
+                <div class="text-center mb-6">
+                    <h4 class="text-lg font-medium mb-2 text-content">方块与深渊之间</h4>
+                    <p class="text-sm text-secondary mb-4">群号: 123456789</p>
+                    <div class="inline-block p-2 bg-white dark:bg-dark-700 rounded-lg border border-primary/20">
+                        <img src="https://api.mmp.cc/api/qqgroup?text=763768355" alt="QQ群头像" class="w-48 h-48 object-cover">
+                    </div>
+                </div>
+                <h5 class="font-medium mb-3 text-content">群成员</h5>
+                <div class="grid grid-cols-3 gap-4">
+                    <div class="member-card rounded-lg p-3 text-center">
+                        <img src="http://q1.qlogo.cn/g?b=qq&nk=3662896606&s=100" alt="LunaCat" class="w-16 h-16 rounded-full mx-auto mb-2 object-cover">
+                        <p class="text-sm font-medium text-content">LunaCat</p>
+                        <p class="text-xs text-secondary">站长</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 文章详情模态框 -->
+    <div id="article-modal" class="modal fixed inset-0 flex items-center justify-center hidden p-4 z-50">
+        <div class="absolute inset-0 bg-black opacity-50 backdrop-blur-lg" id="article-modal-overlay"></div>
+        <div class="modal-content relative bg-white dark:bg-dark-800 rounded-2xl shadow-2xl max-w-3xl w-full mx-4 mc-card overflow-y-auto max-h-[90vh]">
+            <div class="p-6">
+                <div class="flex justify-between items-center mb-6">
+                    <h3 id="article-title" class="text-xl font-minecraft text-content"></h3>
+                    <button id="close-article-modal" class="text-content hover:text-gray-700 dark:hover:text-gray-300">
+                        <i class="fa fa-times"></i>
+                    </button>
+                </div>
+                <div class="mb-4 text-sm text-secondary" id="article-date"></div>
+                <div class="mb-6" id="article-labels"></div>
+                <div id="article-content" class="prose dark:prose-invert max-w-none">
+                    <!-- 文章内容将通过JavaScript动态加载 -->
+                    <div class="text-center py-10">
+                        <div class="animate-spin rounded-full h-12 w-12 border-b-2 border-primary mx-auto"></div>
+                        <p class="mt-4 text-secondary">加载中...</p>
+                    </div>
+                </div>
+                <div class="mt-6 pt-6 border-t border-gray-200 dark:border-gray-700">
+                    <a id="article-github-link" href="" target="_blank" class="text-primary hover:text-primary/80 text-sm inline-flex items-center">
+                        <i class="fa fa-github mr-1"></i> 查看GitHub原文
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <script>
-        // 主题切换功能
-        function setTheme(theme) {
-            if (theme === 'dark') {
-                document.body.classList.add('dark');
-                document.body.classList.remove('light');
-            } else {
-                document.body.classList.remove('dark');
-                document.body.classList.add('light');
+        // 页面加载完成后初始化
+        document.addEventListener('DOMContentLoaded', function() {
+            // 初始化MC风格像素粒子
+            initPixelParticles();
+            
+            // 初始化页面配置
+            initPageConfig();
+            
+            // 初始化主题
+            initTheme();
+            
+            // 初始化导航栏滚动效果
+            initNavbarScroll();
+            
+            // 初始化文章列表
+        fetchGitHubIssues();
+
+        // 初始化标签过滤按钮
+        function initTagFilters() {
+            const filterButtons = document.querySelectorAll('.tag-filter-btn');
+            filterButtons.forEach(button => {
+                button.addEventListener('click', function() {
+                    // 移除所有按钮的选中状态
+                    filterButtons.forEach(btn => {
+                        btn.classList.remove('bg-primary', 'text-white');
+                        btn.classList.add('bg-primary/20', 'text-primary');
+                    });
+                    // 添加当前按钮的选中状态
+                    this.classList.remove('bg-primary/20', 'text-primary');
+                    this.classList.add('bg-primary', 'text-white');
+                });
+            });
+        }
+
+        // 页面加载完成后初始化标签过滤
+        document.addEventListener('DOMContentLoaded', initTagFilters);
+            
+            // 初始化技能标签
+            initSkillTags();
+            
+            // 初始化其他功能
+            initScrollAnimations();
+            initMobileMenu();
+            initScrollProgress();
+            initBackToTop();
+            initImageLoadAnimation();
+            
+            // 初始化QQ群模态框
+            initQQGroupModal();
+        });
+        
+        // 初始化MC风格像素粒子背景
+        function initPixelParticles() {
+            const container = document.getElementById('pixel-particles');
+            const particleCount = 30; // 粒子数量
+            
+            // 创建像素粒子
+            for (let i = 0; i < particleCount; i++) {
+                const particle = document.createElement('div');
+                particle.className = 'pixel-particle';
+                
+                // 随机位置
+                const x = Math.random() * 100;
+                const y = Math.random() * 100;
+                
+                // 随机动画延迟和持续时间
+                const delay = Math.random() * 5;
+                const duration = Math.random() * 10 + 10;
+                
+                particle.style.left = `${x}%`;
+                particle.style.top = `${y}%`;
+                particle.style.animation = `float ${duration}s ease-in-out infinite ${delay}s, 
+                                          fadeInOut ${duration}s ease-in-out infinite ${delay}s`;
+                
+                container.appendChild(particle);
+            }
+            
+            // 添加关键帧动画
+            const style = document.createElement('style');
+            style.textContent = `
+                @keyframes fadeInOut {
+                    0%, 100% { opacity: 0; }
+                    20%, 80% { opacity: 0.6; }
+                }
+            `;
+            document.head.appendChild(style);
+        }
+        
+        // 初始化技能标签 - 改为MC相关技能
+        function initSkillTags() {
+            const skillContainer = document.querySelector('#about .flex.flex-wrap');
+            const skills = ["数据包开发", "MCR技术", "整合包设计"]; // 改为指定技能
+            
+            if (skillContainer && skills && skills.length > 0) {
+                skills.forEach((skill, index) => {
+                    const tag = document.createElement('span');
+                    tag.className = 'skill-tag text-content';
+                    tag.textContent = skill;
+                    skillContainer.appendChild(tag);
+                    
+                    // 添加延迟出现效果
+                    setTimeout(() => {
+                        tag.style.opacity = '1';
+                        tag.style.transform = 'translateY(0)';
+                        tag.classList.add('block-appear');
+                    }, 300 + index * 200);
+                });
             }
         }
         
-        document.getElementById('theme-toggle').addEventListener('click', function() {
-            if (document.body.classList.contains('dark')) {
-                setTheme('light');
-            } else {
-                setTheme('dark');
-            }
-        });
-        
-        document.getElementById('mobile-theme-toggle').addEventListener('click', function() {
-            if (document.body.classList.contains('dark')) {
-                setTheme('light');
-            } else {
-                setTheme('dark');
-            }
-        });
-        
-        // 移动端菜单切换
-        document.getElementById('mobile-menu-btn').addEventListener('click', function() {
-            const mobileMenu = document.getElementById('mobile-menu');
-            mobileMenu.classList.toggle('hidden');
-        });
-        
-        // 渲染文章列表
-        function renderPostList() {
-            const postListContainer = document.getElementById('post-list');
-            const posts = config.postListJson;
+        // 初始化导航栏滚动效果
+        function initNavbarScroll() {
+            const header = document.querySelector('header');
+            window.addEventListener('scroll', function() {
+                if (window.scrollY > 50) {
+                    header.classList.add('scrolled');
+                } else {
+                    header.classList.remove('scrolled');
+                }
+            });
+        }
+
+        // 初始化页面配置
+        function initPageConfig() {
+            const config = {
+                title: "LunaCat的小站",
+                subTitle: "我的世界创作与分享空间",
+                avatarUrl: "http://q1.qlogo.cn/g?b=qq&nk=3662896606&s=100",
+                faviconUrl: "http://q1.qlogo.cn/g?b=qq&nk=3662896606&s=100",
+                ogImage: "http://q1.qlogo.cn/g?b=qq&nk=3662896606&s=100"
+            };
             
-            // 如果没有文章
-            if (Object.keys(posts).length === 0) {
-                document.getElementById('no-more-posts').classList.remove('hidden');
-                return;
-            }
+            document.getElementById('blog-title').textContent = config.title;
+            document.querySelector('meta[name="description"]').setAttribute('content', config.subTitle);
             
-            // 遍历文章数据并生成HTML
-            Object.values(posts).forEach(post => {
-                const postCard = document.createElement('div');
-                postCard.className = 'bg-white dark:bg-gray-900 rounded-xl shadow-md overflow-hidden blog-card border border-gray-200 dark:border-gray-700 fade-in';
-                
-                // 生成标签HTML
-                const labelsHtml = post.labels.map(label => {
-                    const color = config.labelColorDict[label.toLowerCase().replace(' ', '-')] || '#000';
-                    return `<span class="inline-block px-2 py-1 text-xs rounded-full mr-2" style="background-color: ${color}; color: ${isLightColor(color) ? '#000' : '#fff'}">${label}</span>`;
-                }).join('');
-                
-                postCard.innerHTML = `
-                    <div class="p-6">
-                        <div class="flex flex-wrap mb-3">
-                            ${labelsHtml}
-                        </div>
-                        
-                        <h3 class="text-xl font-semibold mb-3 font-minecraft">
-                            <a href="${post.postUrl}" class="hover:text-primary transition-colors">${post.postTitle}</a>
-                        </h3>
-                        
-                        <p class="text-gray-600 dark:text-gray-300 mb-4 line-clamp-3">
-                            ${post.description}
-                        </p>
-                        
-                        <div class="flex justify-between items-center text-sm text-gray-500 dark:text-gray-400">
-                            <span>${post.createdDate}</span>
-                            <span>${post.wordCount} 字</span>
-                        </div>
-                        
-                        ${config.showPostSource ? `
-                            <div class="mt-4 pt-4 border-t border-gray-100 dark:border-gray-800">
-                                <a href="${post.postSourceUrl}" target="_blank" class="text-sm text-primary hover:underline flex items-center">
-                                    <i class="fa fa-github mr-1" aria-hidden="true"></i> 查看原文
-                                </a>
-                            </div>
-                        ` : ''}
-                    </div>
-                `;
-                
-                postListContainer.appendChild(postCard);
+            document.getElementById('favicon').setAttribute('href', config.faviconUrl);
+            document.getElementById('og-image').setAttribute('content', config.ogImage);
+        }
+        
+        // 初始化主题
+        function initTheme() {
+            const themeToggle = document.getElementById('theme-toggle');
+            
+            // 检查系统主题偏好
+            const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+            // 检查本地存储的主题偏好
+            const savedTheme = localStorage.getItem('theme') || (prefersDark ? 'dark' : 'light');
+            setTheme(savedTheme);
+            
+            // 主题切换事件
+            themeToggle.addEventListener('click', function() {
+                const newTheme = document.body.classList.contains('dark') ? 'light' : 'dark';
+                setTheme(newTheme);
+                localStorage.setItem('theme', newTheme);
+            });
+            
+            // 监听系统主题变化
+            window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', (e) => {
+                if (!localStorage.getItem('theme')) {
+                    setTheme(e.matches ? 'dark' : 'light');
+                }
             });
         }
         
-        // 判断颜色是否为浅色（用于文本颜色自动适配）
-        function isLightColor(hexColor) {
-            // 去掉#号
-            hexColor = hexColor.replace('#', '');
+        // 设置主题
+        function setTheme(theme) {
+            const themeToggle = document.getElementById('theme-toggle');
+            const galleryBg = document.querySelector('.gallery-bg');
             
-            // 解析RGB值
-            const r = parseInt(hexColor.substring(0, 2), 16);
-            const g = parseInt(hexColor.substring(2, 4), 16);
-            const b = parseInt(hexColor.substring(4, 6), 16);
+            if (theme === 'dark') {
+                document.body.classList.remove('light');
+                document.body.classList.add('dark');
+                themeToggle.classList.remove('light');
+                document.documentElement.style.colorScheme = 'dark';
+            } else {
+                document.body.classList.remove('dark');
+                document.body.classList.add('light');
+                themeToggle.classList.add('light');
+                document.documentElement.style.colorScheme = 'light';
+            }
             
-            // 计算亮度
+            // 调整背景图亮度
+            if (galleryBg) {
+                galleryBg.style.filter = theme === 'dark' 
+                    ? 'blur(12px) brightness(0.3)' 
+                    : 'blur(12px) brightness(0.8)';
+            }
+        }
+        
+        // 从GitHub API获取Issues并渲染文章列表
+        function fetchGitHubIssues(page = 1, filter = '') {
+            // GitHub仓库信息
+            const owner = "11451579799";
+            const repo = "11451579799.github.io";
+            console.log(`正在从GitHub API获取数据: owner=${owner}, repo=${repo}`);
+              // 添加分页参数和过滤参数
+              let apiUrl = `https://api.github.com/repos/${owner}/${repo}/issues?state=open&sort=updated&direction=desc&page=${page}&per_page=10`;
+              console.log(`API URL: ${apiUrl}`);
+
+            // 如果有过滤标签，添加到API请求
+            if (filter) {
+                apiUrl += `&labels=${encodeURIComponent(filter)}`;
+            }
+
+            // 建议添加GitHub Personal Access Token以避免API速率限制
+            // 令牌只需要repo权限
+            // 注意：不要将令牌硬编码在前端代码中！
+            // 推荐做法：通过后端服务器代理请求或使用环境变量
+            const githubToken = ''; // 在此处添加你的令牌（仅开发测试使用）
+
+            const headers = {
+                'Accept': 'application/vnd.github.v3+json',
+                'User-Agent': 'LunaCat-Blog'
+            };
+
+            // 如果提供了令牌，则添加到请求头
+            if (githubToken) {
+                headers['Authorization'] = `token ${githubToken}`;
+            }
+
+            // 显示加载状态
+            const loading = document.getElementById('loading');
+            const postList = document.getElementById('post-list');
+            const noPosts = document.getElementById('no-posts');
+
+            loading.classList.remove('hidden');
+            postList.classList.add('hidden');
+            noPosts.classList.add('hidden');
+
+            fetch(apiUrl, { headers })
+                .then(response => {
+                    if (!response.ok) {
+                        // 处理不同类型的HTTP错误
+                        if (response.status === 404) {
+                            throw new Error('未找到仓库或问题');
+                        } else if (response.status === 403) {
+                            throw new Error('API请求被拒绝，可能是速率限制');
+                        } else {
+                            throw new Error(`HTTP错误: ${response.status}`);
+                        }
+                    }
+                    return response.json();
+                })
+                .then(issues => {
+                    loading.classList.add('hidden');
+                    if (!issues || issues.length === 0) {
+                        noPosts.classList.remove('hidden');
+                        return;
+                    }
+
+                    // 如果是第一页，则清空列表
+                    if (page === 1) {
+                        postList.innerHTML = '';
+                    }
+
+                    renderPostList(issues);
+
+                    // 添加加载更多按钮（如果有更多文章）
+                    if (issues.length === 10) {
+                        addLoadMoreButton(page + 1, filter);
+                    }
+                })
+                .catch(error => {
+                    console.error('加载文章失败:', error);
+                    loading.classList.add('hidden');
+                    noPosts.classList.remove('hidden');
+                    // 显示错误信息
+                    const errorMessage = document.createElement('p');
+                    errorMessage.className = 'text-red-500 text-sm mt-2';
+                    
+                    // 提供更详细的错误信息
+                    let detailedMessage = `错误: ${error.message}`;
+                    if (error.message.includes('404')) {
+                        detailedMessage += '\n可能原因: 仓库不存在或路径错误，请检查owner和repo设置。';
+                    } else if (error.message.includes('403')) {
+                        detailedMessage += '\n可能原因: API速率限制或权限不足，建议添加GitHub令牌。';
+                    }
+                    
+                    errorMessage.textContent = detailedMessage;
+                    noPosts.appendChild(errorMessage);
+                });
+        }
+
+        // 添加加载更多按钮
+        function addLoadMoreButton(nextPage, filter) {
+            const postList = document.getElementById('post-list');
+            // 检查是否已存在加载更多按钮
+            const existingButton = document.querySelector('.load-more-btn');
+            if (existingButton) {
+                existingButton.remove();
+            }
+
+            const loadMoreButton = document.createElement('div');
+            loadMoreButton.className = 'load-more-btn col-span-full text-center py-6';
+            loadMoreButton.innerHTML = `
+                <button class="mc-button text-white px-6 py-3 rounded-lg text-sm font-minecraft"
+                        onclick="fetchGitHubIssues(${nextPage}, '${filter}')">
+                    加载更多
+                </button>`;
+            postList.appendChild(loadMoreButton);
+        }
+        
+        // 渲染文章列表 - 增强点击效果
+        function renderPostList(issues) {
+            const postList = document.getElementById('post-list');
+            const loading = document.getElementById('loading');
+            const noPosts = document.getElementById('no-posts');
+            
+            loading.classList.add('hidden');
+            
+            if (!issues || issues.length === 0) {
+                noPosts.classList.remove('hidden');
+                return;
+            }
+            
+            postList.classList.remove('hidden');
+            
+            issues.forEach((issue, index) => {
+                const postCard = document.createElement('div');
+                postCard.className = 'blog-card mc-card shadow-lg fade-in';
+                postCard.style.transitionDelay = `${index * 100}ms`;
+                
+                // 处理标签
+                let labelsHtml = '';
+                if (issue.labels && issue.labels.length > 0) {
+
+
+                    issue.labels.forEach(label => {
+                        const color = label.color ? '#' + label.color : '#55aa55';
+                        labelsHtml += `<span class="inline-block px-2 py-1 text-xs font-medium rounded-full mr-2 mb-2" style="background-color: ${color}; color: ${isLightColor(color) ? '#000' : '#fff'}">${label.name}</span>`;
+
+
+                    });
+                }
+                
+                // 格式化日期
+                const date = new Date(issue.created_at);
+                const formattedDate = `${date.getFullYear()}-${(date.getMonth() + 1).toString().padStart(2, '0')}-${date.getDate().toString().padStart(2, '0')}`;
+
+                
+                // 文章内容预览
+                let preview = issue.body || '';
+                preview = preview.replace(/[#*`]/g, '');
+                preview = preview.substring(0, 100) + (preview.length > 100 ? '...' : '');
+                
+                // 文章卡片内容
+                postCard.innerHTML = `
+                    <div class="p-6">
+                        <div class="flex justify-between items-start mb-4">
+                            <h3 class="text-xl font-bold mb-2 font-minecraft text-content">${issue.title}</h3>
+                        </div>
+                        <div class="mb-4">${labelsHtml}</div>
+                        <p class="text-secondary text-sm mb-4">${preview}</p>
+                        <div class="flex justify-between items-center">
+                            <span class="text-xs text-secondary">${formattedDate}</span>
+                            <a href="${issue.html_url}" target="_blank" class="text-primary hover:text-primary/80 text-sm read-more">
+                                查看全文 <i class="fa fa-arrow-right"></i>
+                            </a>
+                        </div>
+                    </div>
+                `;
+                
+                
+                // 点击卡片任意位置打开文章详情模态框
+                postCard.addEventListener('click', function() {
+                    openArticleModal(issue);
+                });
+                
+                postList.appendChild(postCard);
+                
+                // 添加方块出现动画
+                setTimeout(() => {
+                    postCard.classList.add('block-appear');
+                }, 100 + index * 100);
+            });
+            
+            // 触发滚动动画
+            setTimeout(() => {
+                initScrollAnimations();
+            }, 500);
+        }
+        
+        // 判断颜色亮度
+        function isLightColor(color) {
+            const hex = color.replace('#', '');
+            const r = parseInt(hex.substring(0, 2), 16);
+            const g = parseInt(hex.substring(2, 4), 16);
+            const b = parseInt(hex.substring(4, 6), 16);
             const luminance = (0.299 * r + 0.587 * g + 0.114 * b) / 255;
-            
-            // 亮度大于0.5认为是浅色
             return luminance > 0.5;
         }
         
         // 初始化滚动动画
         function initScrollAnimations() {
             const fadeElements = document.querySelectorAll('.fade-in');
-            const backToTopBtn = document.getElementById('back-to-top');
             
-            // 观察元素是否进入视口
             const observer = new IntersectionObserver((entries) => {
                 entries.forEach(entry => {
                     if (entry.isIntersecting) {
@@ -710,19 +1446,236 @@
             fadeElements.forEach(element => {
                 observer.observe(element);
             });
+        }
+        
+        // 初始化移动端菜单
+        function initMobileMenu() {
+            const menuBtn = document.getElementById('mobile-menu-btn');
+            const closeBtn = document.getElementById('close-mobile-menu');
+            const mobileMenu = document.getElementById('mobile-menu');
             
-            // 滚动时显示/隐藏返回顶部按钮
-            window.addEventListener('scroll', function() {
-                if (window.scrollY > 300) {
-                    backToTopBtn.classList.remove('opacity-0', 'invisible');
-                    backToTopBtn.classList.add('opacity-100', 'visible');
-                } else {
-                    backToTopBtn.classList.add('opacity-0', 'invisible');
-                    backToTopBtn.classList.remove('opacity-100', 'visible');
+            menuBtn.addEventListener('click', function(event) {
+                mobileMenu.classList.remove('hidden');
+                mobileMenu.classList.add('flex');
+                document.body.style.overflow = 'hidden';
+            });
+            
+            function closeMenu(event) {
+                mobileMenu.classList.add('hidden');
+                mobileMenu.classList.remove('flex');
+                document.body.style.overflow = '';
+            }
+            
+            closeBtn.addEventListener('click', closeMenu);
+            mobileMenu.addEventListener('click', function(e) {
+                if (e.target === mobileMenu) {
+                    closeMenu(e);
                 }
             });
             
-            // 返回顶部功能
+            mobileMenu.querySelectorAll('a').forEach(link => {
+                link.addEventListener('click', closeMenu);
+            });
+        }
+        
+
+        // 初始化QQ群模态框
+        function initQQGroupModal() {
+            const modal = document.getElementById('qq-group-modal');
+            const qqBtn = document.getElementById('qq-group-btn');
+            const mobileQqBtn = document.getElementById('mobile-qq-group-btn');
+            const closeBtn = document.getElementById('close-modal');
+            const modalOverlay = document.getElementById('modal-overlay');
+            
+            // 打开模态框
+            function openModal() {
+                modal.classList.remove('hidden');
+                // 强制重排以确保动画能正确触发
+                void modal.offsetWidth;
+                modal.classList.add('active');
+                document.body.style.overflow = 'hidden';
+            }
+
+            function closeModal() {
+                modal.classList.remove('active');
+                setTimeout(() => {
+                    modal.classList.add('hidden');
+                    document.body.style.overflow = '';
+                }, 300);
+            }
+
+            qqBtn.addEventListener('click', openModal);
+            mobileQqBtn.addEventListener('click', openModal);
+            closeBtn.addEventListener('click', closeModal);
+            modalOverlay.addEventListener('click', closeModal);
+        }
+        
+
+        // 文章详情模态框控制函数
+        function openArticleModal(issue) {
+            const modal = document.getElementById('article-modal');
+            const closeModalBtn = document.getElementById('close-article-modal');
+            const modalOverlay = document.getElementById('article-modal-overlay');
+            const articleTitle = document.getElementById('article-title');
+            const articleDate = document.getElementById('article-date');
+            const articleLabels = document.getElementById('article-labels');
+            const articleContent = document.getElementById('article-content');
+            const articleGithubLink = document.getElementById('article-github-link');
+
+            // 设置文章内容
+            articleTitle.textContent = issue.title;
+            articleDate.textContent = new Date(issue.created_at).toLocaleDateString();
+            articleGithubLink.href = issue.html_url;
+
+            // 清空并添加标签
+            articleLabels.innerHTML = '';
+            issue.labels.forEach(label => {
+                const labelElement = document.createElement('span');
+                labelElement.className = 'inline-block px-2 py-1 text-xs font-medium rounded-full mr-2 mb-2';
+                labelElement.style.backgroundColor = `#${label.color}`;
+                labelElement.style.color = isLightColor(`#${label.color}`) ? '#000' : '#fff';
+                labelElement.textContent = label.name;
+                articleLabels.appendChild(labelElement);
+            });
+
+            // 显示加载状态
+            articleContent.innerHTML = `
+                <div class="text-center py-10">
+                    <div class="animate-spin rounded-full h-12 w-12 border-b-2 border-primary mx-auto"></div>
+                    <p class="mt-4 text-secondary">加载中...</p>
+                </div>
+            `;
+
+            // 打开模态框
+            modal.classList.remove('hidden');
+            // 强制重排以确保动画能正确触发
+            void modal.offsetWidth;
+            modal.classList.add('active');
+            document.body.style.overflow = 'hidden';
+
+            // 显示实际文章内容
+            // 使用DOMPurify净化HTML内容（防止XSS攻击）
+            function sanitizeHTML(html) {
+                // 简化版HTML净化，实际应用中应使用专门的库如DOMPurify
+                return html
+                    .replace(/<script[^>]*>.*?<\/script>/gi, '')
+                    .replace(/<style[^>]*>.*?<\/style>/gi, '')
+                    .replace(/<[^>]*>/gi, function(tag) {
+                        // 允许的标签列表
+                        const allowedTags = ['a', 'b', 'blockquote', 'code', 'em', 'h1', 'h2', 'h3', 'h4', 'h5', 'h6', 'hr', 'i', 'li', 'ol', 'p', 'pre', 'strong', 'ul', 'img'];
+                        const tagName = tag.toLowerCase().match(/<([a-z]+)/);
+                        return tagName && allowedTags.includes(tagName[1]) ? tag : '';
+                    });
+            }
+
+            // 转换Markdown为HTML的简单函数
+            function markdownToHtml(markdown) {
+                // 标题
+                markdown = markdown.replace(/#{1,6}\s+([^\n]+)/g, '<h$1>$2</h$1>');
+                // 粗体
+                markdown = markdown.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>');
+                // 斜体
+                markdown = markdown.replace(/\*(.*?)\*/g, '<em>$1</em>');
+                // 代码块
+                markdown = markdown.replace(/```([\s\S]*?)```/g, '<pre><code>$1</code></pre>');
+                // 行内代码
+                markdown = markdown.replace(/`([^`]+)`/g, '<code>$1</code>');
+                // 链接
+                markdown = markdown.replace(/\[(.*?)\]\((.*?)\)/g, '<a href="$2" target="_blank">$1</a>');
+                // 段落
+                markdown = markdown.replace(/^(?!<h|<pre|<ul|<ol|<li|<p)(.*$)/gm, '<p>$1</p>');
+                return markdown;
+            }
+
+            // 显示实际文章内容
+            if (issue.body) {
+                let htmlContent = markdownToHtml(issue.body);
+                htmlContent = sanitizeHTML(htmlContent);
+                articleContent.innerHTML = htmlContent;
+            } else {
+                articleContent.innerHTML = '<p>本文没有内容</p>';
+            }
+
+            // 关闭模态框函数
+            function closeModal() {
+                modal.classList.remove('active');
+                setTimeout(() => {
+                    modal.classList.add('hidden');
+                    document.body.style.overflow = '';
+                }, 300);
+            }
+
+            // 绑定关闭事件
+            closeModalBtn.addEventListener('click', closeModal);
+            modalOverlay.addEventListener('click', closeModal);
+        }
+
+        // 初始化QQ群模态框
+        function initQQGroupModal() {
+            const modal = document.getElementById('qq-group-modal');
+            const qqBtn = document.getElementById('qq-group-btn');
+            const mobileQqBtn = document.getElementById('mobile-qq-group-btn');
+            const closeBtn = document.getElementById('close-modal');
+            const modalOverlay = document.getElementById('modal-overlay');
+            
+            // 打开模态框
+            function openModal() {
+                modal.classList.remove('hidden');
+                // 强制重排以确保动画能正确触发
+                void modal.offsetWidth;
+                modal.classList.add('active');
+                document.body.style.overflow = 'hidden';
+            }
+            
+            // 关闭模态框
+            function closeModal() {
+                modal.classList.add('hidden');
+                document.body.style.overflow = '';
+            }
+            
+            // 绑定按钮事件
+            if (qqBtn) qqBtn.addEventListener('click', openModal);
+            if (mobileQqBtn) mobileQqBtn.addEventListener('click', openModal);
+            if (closeBtn) closeBtn.addEventListener('click', closeModal);
+            if (modalOverlay) modalOverlay.addEventListener('click', closeModal);
+            
+            // ESC键关闭
+            document.addEventListener('keydown', function(e) {
+                if (e.key === 'Escape' && !modal.classList.contains('hidden')) {
+                    closeModal();
+                }
+            });
+        }
+        
+        // 初始化滚动进度条
+        function initScrollProgress() {
+            const scrollProgress = document.getElementById('scroll-progress');
+            
+            window.addEventListener('scroll', function() {
+                const winScroll = document.body.scrollTop || document.documentElement.scrollTop;
+                const height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+                const scrolled = (winScroll / height) * 100;
+                scrollProgress.style.width = scrolled + '%';
+            });
+        }
+        
+        // 初始化回到顶部按钮
+        function initBackToTop() {
+            const backToTopBtn = document.getElementById('back-to-top');
+            
+            // 添加按钮出现/消失动画
+            backToTopBtn.style.transition = 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)';
+            
+            window.addEventListener('scroll', function() {
+                if (window.pageYOffset > 300) {
+                    backToTopBtn.classList.add('opacity-100');
+                    backToTopBtn.classList.remove('opacity-0', 'invisible');
+                } else {
+                    backToTopBtn.classList.remove('opacity-100');
+                    backToTopBtn.classList.add('opacity-0', 'invisible');
+                }
+            });
+            
             backToTopBtn.addEventListener('click', function() {
                 window.scrollTo({
                     top: 0,
@@ -730,116 +1683,31 @@
                 });
             });
         }
-        
-        // 留言功能
-        document.addEventListener('DOMContentLoaded', function() {
-            const commentForm = document.getElementById('comment-form');
-            const commentsContainer = document.getElementById('comments-container');
-            const commentCount = document.getElementById('comment-count');
-            
-            // 加载本地存储的留言
-            function loadComments() {
-                const comments = JSON.parse(localStorage.getItem('lunacat_comments') || '[]');
-                renderComments(comments);
-            }
-            
-            // 渲染留言
-            function renderComments(comments) {
-                if (comments.length === 0) {
-                    commentsContainer.innerHTML = `
-                        <div class="text-center text-gray-500 dark:text-gray-400 py-10">
-                            <i class="fa fa-comment-o text-4xl mb-3 opacity-30" aria-hidden="true"></i>
-                            <p>还没有留言，快来抢沙发吧！</p>
-                        </div>
-                    `;
-                    commentCount.textContent = '0';
-                    return;
+
+        // 初始化图片加载动画
+        function initImageLoadAnimation() {
+            const images = document.querySelectorAll('img');
+
+            images.forEach(img => {
+                // 如果图片已经加载完成
+                if (img.complete) {
+                    img.classList.add('loaded');
+                } else {
+                    // 监听图片加载完成事件
+                    img.addEventListener('load', () => {
+                        img.classList.add('loaded');
+                    });
+                    
+                    // 处理图片加载失败的情况
+                    img.addEventListener('error', () => {
+                        img.classList.add('loaded');
+                        img.src = 'https://via.placeholder.com/300x200?text=Image+Not+Found';
+                    });
                 }
-                
-                commentCount.textContent = comments.length;
-                commentsContainer.innerHTML = '';
-                
-                // 最新的留言显示在前面
-                comments.reverse().forEach(comment => {
-                    const commentEl = document.createElement('div');
-                    commentEl.className = 'bg-gray-50 dark:bg-gray-800 p-4 rounded-lg shadow-sm';
-                    
-                    commentEl.innerHTML = `
-                        <div class="flex items-start">
-                            <div class="w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center mr-3 flex-shrink-0">
-                                <span class="text-primary font-medium">${comment.name.charAt(0).toUpperCase()}</span>
-                            </div>
-                            <div class="flex-1">
-                                <div class="flex justify-between items-center mb-1">
-                                    <h4 class="font-medium">${comment.name}</h4>
-                                    <span class="text-xs text-gray-500 dark:text-gray-400">${formatDate(comment.date)}</span>
-                                </div>
-                                <p class="text-gray-600 dark:text-gray-300 text-sm">${comment.content}</p>
-                            </div>
-                        </div>
-                    `;
-                    
-                    commentsContainer.appendChild(commentEl);
-                });
-            }
-            
-            // 格式化日期
-            function formatDate(timestamp) {
-                const date = new Date(timestamp);
-                return `${date.getFullYear()}-${(date.getMonth() + 1).toString().padStart(2, '0')}-${date.getDate().toString().padStart(2, '0')} ${date.getHours().toString().padStart(2, '0')}:${date.getMinutes().toString().padStart(2, '0')}`;
-            }
-            
-            // 提交留言
-            commentForm.addEventListener('submit', function(e) {
-                e.preventDefault();
-                
-                const name = document.getElementById('comment-name').value;
-                const content = document.getElementById('comment-content').value;
-                
-                const newComment = {
-                    name,
-                    content,
-                    date: new Date().getTime()
-                };
-                
-                // 保存到本地存储
-                const comments = JSON.parse(localStorage.getItem('lunacat_comments') || '[]');
-                comments.push(newComment);
-                localStorage.setItem('lunacat_comments', JSON.stringify(comments));
-                
-                // 重新渲染留言
-                renderComments(comments);
-                
-                // 重置表单
-                commentForm.reset();
-                
-                // 显示成功提示
-                const submitBtn = commentForm.querySelector('button[type="submit"]');
-                const originalText = submitBtn.textContent;
-                submitBtn.disabled = true;
-                submitBtn.textContent = '发送成功！';
-                
-                setTimeout(() => {
-                    submitBtn.disabled = false;
-                    submitBtn.textContent = originalText;
-                }, 2000);
             });
-            
-            // 初始化加载留言
-            loadComments();
-            
-            // 设置导航和页脚的头像
-            const navAvatar = document.getElementById('nav-avatar');
-            const footerAvatar = document.getElementById('footer-avatar');
-            navAvatar.src = config.avatarUrl;
-            footerAvatar.src = config.avatarUrl;
-            navAvatar.alt = config.title;
-            footerAvatar.alt = config.title;
-            
-            // 设置GMEEK版本
-            document.getElementById('gmeek-version').textContent = config.GMEEK_VERSION;
-        });
+        }
+
     </script>
 
-
-</body></html>
+</body>
+</html>
